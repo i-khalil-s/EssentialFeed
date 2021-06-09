@@ -35,6 +35,19 @@ class RemoteFeedLoaderTest: XCTestCase {
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
+    func test_load_deliversNoItemsOnNot200HTTPResponse() {
+        let (sut,client) = makeSUT()
+        
+        var capturedResults = [RemoteFeedLoader.Result]()
+        
+        sut.load {capturedResults.append($0)}
+        
+        let emptyListJSON = Data(bytes: "{\"items\":[]}".utf8)
+        client.complete(withStatus: 200, data: emptyListJSON)
+        
+        XCTAssertEqual(capturedResults, [.success([])])
+    }
+
     //MARK: Sad paths
     
     func test_init_DoesNotRequestDateFromURL() {
