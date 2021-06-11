@@ -104,16 +104,18 @@ class RemoteFeedLoaderTest: XCTestCase {
     
     private class HTTPClientSpy: HTTPClient {
         
-        private var messages = [(url: URL, completion: (HTTPResponseError) -> Void)]()
+        private var messages = [(url: URL, completion: (HTTPResponse) -> Void)]()
         
         var requestedURLs: [URL] {
             return messages.map{$0.url}
         }
         
-        func get(from url: URL, completion: @escaping (HTTPResponseError) -> Void) {
+        // @Protocol
+        func get(from url: URL, completion: @escaping (HTTPResponse) -> Void) {
             messages.append((url, completion))
         }
         
+        // Functions
         func complete(with error: Error, at index: Int = 0) {
             messages[index].completion(.failure(error))
         }
@@ -128,6 +130,18 @@ class RemoteFeedLoaderTest: XCTestCase {
             messages[index].completion(.success(data, response))
         }
         
+    }
+    
+    private func expect(_ sut: RemoteFeedLoader, toCompleteWith result: RemoteFeedLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+        var capturedResults = [RemoteFeedLoader.Result]()
+        
+        sut.load { result in
+            capturedResults.append(result)
+        }
+        
+        action()
+        
+        XCTAssertEqual(capturedResults, [result], file: file, line: line)
     }
     
     private func makeSUT(url: URL = URL(string: "http://a-url.com")!) -> (sut: RemoteFeedLoader, client: HTTPClientSpy) {
@@ -157,15 +171,4 @@ class RemoteFeedLoaderTest: XCTestCase {
         return  try! JSONSerialization.data(withJSONObject: itemsJSON)
     }
     
-    private func expect(_ sut: RemoteFeedLoader, toCompleteWith result: RemoteFeedLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
-        var capturedResults = [RemoteFeedLoader.Result]()
-        
-        sut.load { result in
-            capturedResults.append(result)
-        }
-        
-        action()
-        
-        XCTAssertEqual(capturedResults, [result], file: file, line: line)
-    }
 }

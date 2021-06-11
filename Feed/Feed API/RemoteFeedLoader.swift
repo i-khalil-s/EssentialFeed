@@ -7,13 +7,13 @@
 
 import Foundation
 
-public enum HTTPResponseError {
+public enum HTTPResponse {
     case success(Data, HTTPURLResponse)
     case failure(Error)
 }
 
 public protocol HTTPClient {
-    func get(from url: URL, completion: @escaping (HTTPResponseError) -> Void)
+    func get(from url: URL, completion: @escaping (HTTPResponse) -> Void)
 }
 
 public final class RemoteFeedLoader {
