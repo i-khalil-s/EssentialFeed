@@ -1,3 +1,3 @@
 # Essential Feed App - Course first take
 
-[![Build Status](https://travis-ci.com/i-khalil-s/EssentialFeed.svg?branch=main)](https://travis-ci.com/i-khalil-s/EssentialFeed)
+[![CI](https://github.com/i-khalil-s/EssentialFeed/actions/workflows/CI.yml/badge.svg)](https://github.com/i-khalil-s/EssentialFeed/actions/workflows/CI.yml)
