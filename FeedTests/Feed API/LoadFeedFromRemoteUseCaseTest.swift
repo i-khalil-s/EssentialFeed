@@ -12,7 +12,7 @@ import Feed
 
 //--------Production code
 
-class RemoteFeedLoaderTest: XCTestCase {
+class LoadFeedFromRemoteUseCaseTest: XCTestCase {
     
     // MARK: Happy paths
     
