@@ -11,6 +11,7 @@ class FeedStoreSpy: FeedStore {
     
     var deletionCompletions = [DeletionCompletion]()
     var insertionCompletions = [InsertionCompletion]()
+    var retreiveCompletions = [RetreivalCompletion]()
     
     enum ReceivedMessage: Equatable {
         case deleteCachedFeed
@@ -46,8 +47,13 @@ class FeedStoreSpy: FeedStore {
         receivedMessages.append(.insert(feed, timestamp))
     }
     
-    func retreive() {
+    func retreive(completion: @escaping RetreivalCompletion) {
         receivedMessages.append(.retreive)
+        retreiveCompletions.append(completion)
+    }
+    
+    func completeRetreival(with error: NSError, at index: Int = 0) {
+        retreiveCompletions[index](error)
     }
     
 }
