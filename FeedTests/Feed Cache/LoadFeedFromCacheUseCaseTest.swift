@@ -43,6 +43,19 @@ class LoadFeedFromCache: XCTestCase {
 
     }
     
+    func test_load_deliversCachedImagesOnLessThenSevenDaysOldCache() {
+        let feed = uniqueImageFeed()
+        let fixCurrentDate = Date()
+        let lessThanSevenOldDaysTimestamp = fixCurrentDate.adding(days: -7).adding(seconds: 1)
+        
+        let (sut, store) = makeSUT(currentDate: {fixCurrentDate})
+        
+        expect(sut, toCompleteWith: .success(feed.models), when: {
+            store.completeRetreival(with: feed.local, timestamp: lessThanSevenOldDaysTimestamp)
+            
+        })
+    }
+    
     // MARK: Helpers
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
@@ -73,8 +86,15 @@ class LoadFeedFromCache: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    private func anyNSError() -> NSError {
-        return NSError(domain: "Any error", code: 1)
+}
+
+private extension Date {
+    
+    func adding(days: Int) -> Date {
+        return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
     }
     
+    func adding(seconds: TimeInterval) -> Date {
+        return self + seconds
+    }
 }
