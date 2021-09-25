@@ -36,6 +36,19 @@ class ValidateFeedCacheUseCase: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [.retreive])
     }
     
+    func test_validate_doesNotDeleteCacheOnLessThanSevenDaysCache() {
+        let feed = uniqueImageFeed()
+        let fixCurrentDate = Date()
+        let lessThanSevenOldDaysTimestamp = fixCurrentDate.adding(days: -7).adding(seconds: 1)
+        
+        let (sut, store) = makeSUT(currentDate: {fixCurrentDate})
+        
+        sut.validateCache()
+        store.completeRetreival(with: feed.local, timestamp: lessThanSevenOldDaysTimestamp)
+        
+        XCTAssertEqual(store.receivedMessages, [.retreive])
+    }
+    
     // MARK: Helpers
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
@@ -44,5 +57,16 @@ class ValidateFeedCacheUseCase: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         trackForMemoryLeaks(store, file: file, line: line)
         return (sut, store)
+    }
+}
+
+private extension Date {
+    
+    func adding(days: Int) -> Date {
+        return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+    }
+    
+    func adding(seconds: TimeInterval) -> Date {
+        return self + seconds
     }
 }
