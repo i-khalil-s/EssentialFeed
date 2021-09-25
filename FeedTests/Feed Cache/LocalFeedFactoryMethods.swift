@@ -17,14 +17,17 @@ public func uniqueImageFeed() -> (models: [FeedImage], local: [LocalFeedImage]) 
     return (models, local)
 }
 
-public func anyURL() -> URL {
-    return URL(string: "http://a-url.com")!
-}
-
 public func anyString() -> String {
     return "any string"
 }
 
-public func anyNSError() -> NSError {
-    return NSError(domain: "Any error", code: 1)
+public extension Date {
+    
+    func adding(days: Int) -> Date {
+        return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+    }
+    
+    func adding(seconds: TimeInterval) -> Date {
+        return self + seconds
+    }
 }

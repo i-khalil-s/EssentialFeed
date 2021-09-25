@@ -91,10 +91,6 @@ class URLSessionHTTPClientTest: XCTestCase {
         return sut
     }
     
-    private func anyURL() -> URL {
-        return URL(string: "http://a-url.com")!
-    }
-    
     private func resultErrorFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #filePath, line: UInt = #line) -> Error? {
         
         let result = resultFor(data: data, response: response, error: error, file: file, line: line)
@@ -207,10 +203,6 @@ class URLSessionHTTPClientTest: XCTestCase {
     
     private func anyData() -> Data {
         return Data("Any data".utf8)
-    }
-    
-    private func anyNSError() -> NSError {
-        return NSError(domain: "Any error", code: 1)
     }
     
     private func anyHTTPURLResponse() -> HTTPURLResponse {
