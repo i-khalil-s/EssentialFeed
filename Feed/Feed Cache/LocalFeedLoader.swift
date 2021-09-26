@@ -7,24 +7,37 @@
 
 import Foundation
 
-public final class LocalFeedLoader {
+private final class FeedCachePolicy {
     
-    private let store: FeedStore
     private let currentDate: () -> Date
     private let calendar = Calendar(identifier: .gregorian)
+    
+    public init(currentDate: @escaping () -> Date = Date.init) {
+        self.currentDate = currentDate
+    }
+    
     private var maxCacheAgeInDays: Int {
         return 7
     }
     
-    public init(store: FeedStore, currentDate: @escaping () -> Date = Date.init) {
-        self.store = store
-        self.currentDate = currentDate
-    }
-    
-    private func isValid(_ timestamp: Date) -> Bool {
+    public func isValid(_ timestamp: Date) -> Bool {
         guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else { return false }
         return currentDate() < maxCacheAge
     }
+}
+
+public final class LocalFeedLoader {
+    
+    private let currentDate: () -> Date
+    private let store: FeedStore
+    private let cachePolicy: FeedCachePolicy
+    
+    public init(store: FeedStore, currentDate: @escaping () -> Date = Date.init) {
+        self.store = store
+        self.currentDate = currentDate
+        self.cachePolicy = FeedCachePolicy(currentDate: currentDate)
+    }
+    
 }
 extension LocalFeedLoader {
     
@@ -38,7 +51,7 @@ extension LocalFeedLoader {
             case .failure(_):
                 self.store.deleteCachedFeed { _ in }
                 
-            case let .found(_, timestamp) where !self.isValid(timestamp):
+            case let .found(_, timestamp) where !self.cachePolicy.isValid(timestamp):
                 self.store.deleteCachedFeed { _ in }
                 
             case .found, .empty: break
@@ -84,7 +97,7 @@ extension LocalFeedLoader: FeedLoader {
             switch result {
             case let .failure(error):
                 completion(.failure(error))
-            case let .found(feed, timestamp) where self.isValid(timestamp):
+            case let .found(feed, timestamp) where self.cachePolicy.isValid(timestamp):
                 completion(.success(feed.toModels()))
             case .found, .empty:
                 completion(.success([]))
