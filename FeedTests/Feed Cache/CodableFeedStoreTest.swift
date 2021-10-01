@@ -70,6 +70,11 @@ class CodableFeedStore {
         }
     }
     
+    func delete(completion: @escaping FeedStore.DeletionCompletion) {
+        try? FileManager.default.removeItem(at: storeURL)
+        completion(nil)
+    }
+    
 }
 
 class CodableFeedStoreTest: XCTestCase {
@@ -157,6 +162,18 @@ class CodableFeedStoreTest: XCTestCase {
         let invalidError = insert(cache: cache, into: sut)
         
         XCTAssertNotNil(invalidError, "Expected cache insertion to fail with error")
+    }
+    
+    func test_delete_hasNoSideEffectsOnEmptyCache() {
+        let sut = makeSUT()
+        var deleteError: Error?
+        
+        sut.delete { receivedError in
+            deleteError = receivedError
+        }
+        
+        expect(sut, toCompleteWith: .empty)
+        XCTAssertNil(deleteError, "Expected no failure on deletion of empty cache")
     }
     
     // MARK: Helpers
