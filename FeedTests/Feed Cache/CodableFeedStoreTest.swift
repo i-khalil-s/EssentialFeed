@@ -180,8 +180,8 @@ class CodableFeedStoreTest: XCTestCase {
         
         let deleteError = delete(from: sut)
         
-        expect(sut, toCompleteWith: .empty)
         XCTAssertNil(deleteError, "Expected no failure on deletion of empty cache")
+        expect(sut, toCompleteWith: .empty)
     }
     
     func test_delete_deletesCacheOnNonEmptyCache() {
@@ -193,8 +193,8 @@ class CodableFeedStoreTest: XCTestCase {
         
         let deleteError = delete(from: sut)
         
-        expect(sut, toCompleteWith: .empty)
         XCTAssertNil(deleteError, "Expected no failure on deletion of empty cache")
+        expect(sut, toCompleteWith: .empty)
     }
     
     func test_delete_deliversErrorOnDeletionError() {
