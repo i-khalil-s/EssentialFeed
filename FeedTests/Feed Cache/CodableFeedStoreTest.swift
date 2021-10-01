@@ -140,10 +140,7 @@ class CodableFeedStoreTest: XCTestCase {
         var insertionError: Error?
         
         sut.insert(feed: cache.feed, timestamp: cache.timestamp) { receivedError in
-            if let error = receivedError {
-                insertionError = error
-            }
-            
+            insertionError = receivedError
             exp.fulfill()
         }
         wait(for: [exp], timeout: 1.0)
@@ -157,10 +154,7 @@ class CodableFeedStoreTest: XCTestCase {
         var deletionError: Error?
         
         sut.deleteCachedFeed { receivedError in
-            if let error = receivedError {
-                deletionError = error
-            }
-            
+            deletionError = receivedError
             exp.fulfill()
         }
         wait(for: [exp], timeout: 1.0)
