@@ -123,7 +123,8 @@ class CodableFeedStoreTest: XCTestCase {
         
         let deletionError = delete(from: sut)
         
-        XCTAssertNotNil(deletionError, "Expected cache deletion to fail with error")
+        XCTAssertNotNil(deletionError, "Expected cache deletion to fail with error but got nil")
+        expect(sut, toCompleteWith: .empty)
     }
     
     func test_storeSideEffects_runSerially() {
@@ -186,7 +187,7 @@ class CodableFeedStoreTest: XCTestCase {
             deletionError = receivedError
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 1.0)
+        wait(for: [exp], timeout: 7)
 
         return deletionError
     }
