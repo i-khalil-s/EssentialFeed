@@ -23,19 +23,7 @@ class FeedCacheIntegrationTests: XCTestCase {
     func test_load_deliversNoItemsOnEmptyCache() {
         let sut = makeSUT()
         
-        let expectation = expectation(description: "Waiting for cache to load")
-        
-        sut.load {result in
-            switch result{
-            case let .success(images):
-                XCTAssertEqual(images, [], "Expected empty images but got \(images)")
-            case let .failure(error):
-                XCTFail("Expected success but got failure \(error)")
-            }
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 1.0)
+        expect(sut, toLoad: [])
     }
     
     func test_load_deliversItemsSavedOnASeparateInstance() {
@@ -52,20 +40,7 @@ class FeedCacheIntegrationTests: XCTestCase {
         
         wait(for: [saveExp], timeout: 1.0)
         
-        let loadExp = expectation(description: "Waiting to load saved cache")
-        
-        sutToPerformLoad.load { result in
-            switch result {
-            case let .success(recoveredFeed):
-                XCTAssertEqual(recoveredFeed, feed)
-            case let .failure(error):
-                XCTFail("Expected success but got \(error)")
-            }
-            
-            loadExp.fulfill()
-        }
-        
-        wait(for: [loadExp], timeout: 1.0)
+        expect(sutToPerformLoad, toLoad: feed)
     }
     
     // MARK: Helper
@@ -81,6 +56,23 @@ class FeedCacheIntegrationTests: XCTestCase {
         
         return sut
         
+    }
+    
+    private func expect(_ sut: LocalFeedLoader, toLoad items: [FeedImage], file: StaticString = #filePath, line: UInt = #line) {
+        
+        let expectation = expectation(description: "Waiting for cache to load")
+        
+        sut.load { result in
+            switch result{
+            case let .success(images):
+                XCTAssertEqual(images, items, "Expected empty images but got \(images)", file: file, line: line)
+            case let .failure(error):
+                XCTFail("Expected success but got failure \(error)", file: file, line: line)
+            }
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
     }
     
     private func setUpEmptyStoreState() {
