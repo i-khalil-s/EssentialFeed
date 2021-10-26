@@ -31,15 +31,7 @@ class FeedCacheIntegrationTests: XCTestCase {
         let sutToPerformLoad = makeSUT()
         let feed = uniqueImageFeed().models
         
-        let saveExp = expectation(description: "Waiting for save cache")
-        
-        sutToPerformSave.save(feed: feed) { error in
-            XCTAssertNil(error, "Expected feed to be saved but got \(error!)")
-            saveExp.fulfill()
-        }
-        
-        wait(for: [saveExp], timeout: 1.0)
-        
+        expect(sutToPerformSave, toSave: feed)
         expect(sutToPerformLoad, toLoad: feed)
     }
     
@@ -51,23 +43,9 @@ class FeedCacheIntegrationTests: XCTestCase {
         let firstFeed = uniqueImageFeed().models
         let secondFeed = uniqueImageFeed().models
         
-        let saveExpectation1 = expectation(description: "Wait for first save to be made")
+        expect(sutToPerformFirstSave, toSave: firstFeed)
         
-        sutToPerformFirstSave.save(feed: firstFeed) { error in
-            XCTAssertNil(error, "Expected success on first save")
-            saveExpectation1.fulfill()
-        }
-        
-        wait(for: [saveExpectation1], timeout: 1.0)
-        
-        let saveExpectation2 = expectation(description: "Wait for second save to override")
-        
-        sutToPerformSecondSave.save(feed: secondFeed) { error in
-            XCTAssertNil(error, "Expected success on second save")
-            saveExpectation2.fulfill()
-        }
-        
-        wait(for: [saveExpectation2], timeout: 1.0)
+        expect(sutToPerformSecondSave, toSave: secondFeed)
         
         expect(sutToPerformLoad, toLoad: secondFeed)
     }
@@ -102,6 +80,23 @@ class FeedCacheIntegrationTests: XCTestCase {
         }
         
         wait(for: [expectation], timeout: 1.0)
+    }
+    
+    @discardableResult
+    private func expect(_ sut: LocalFeedLoader, toSave items: [FeedImage], file: StaticString = #filePath, line: UInt = #line) -> Error? {
+        
+        var receivedError: Error?
+        let exp = expectation(description: "Wait for first save to be made")
+        
+        sut.save(feed: items) { error in
+            receivedError = error
+            XCTAssertNil(error, "Expected success on first save", file: file, line: line)
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1.0)
+        
+        return receivedError
     }
     
     private func setUpEmptyStoreState() {
