@@ -8,6 +8,8 @@
 import Feed
 import XCTest
 
+
+/// We test only happy paths since we already tested with mocks the errors in the unit tests
 class FeedCacheIntegrationTests: XCTestCase {
     
     override func setUp() {
