@@ -90,9 +90,15 @@ class FeedCacheIntegrationTests: XCTestCase {
         var receivedError: Error?
         let exp = expectation(description: "Wait for first save to be made")
         
-        sut.save(feed: items) { error in
-            receivedError = error
-            XCTAssertNil(error, "Expected success on first save", file: file, line: line)
+        sut.save(feed: items) { result in
+            
+            switch result {
+            case let .failure(error):
+                receivedError = error
+                XCTAssertNil(error, "Expected success on first save", file: file, line: line)
+            default: break
+            }
+            
             exp.fulfill()
         }
         
