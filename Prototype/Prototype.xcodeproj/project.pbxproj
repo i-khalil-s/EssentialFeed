@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3752FF88275AF325008D5730 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3752FF87275AF325008D5730 /* FeedViewController.swift */; };
+		3752FF8A275C16DE008D5730 /* FeedImageViewModel+PrototypeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3752FF89275C16DE008D5730 /* FeedImageViewModel+PrototypeData.swift */; };
 		37F0D00B27599CCE0044698E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F0D00A27599CCE0044698E /* AppDelegate.swift */; };
 		37F0D00D27599CCE0044698E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F0D00C27599CCE0044698E /* SceneDelegate.swift */; };
 		37F0D01227599CCE0044698E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37F0D01027599CCE0044698E /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		3752FF87275AF325008D5730 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		3752FF89275C16DE008D5730 /* FeedImageViewModel+PrototypeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedImageViewModel+PrototypeData.swift"; sourceTree = "<group>"; };
 		37F0D00727599CCE0044698E /* Prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Prototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F0D00A27599CCE0044698E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37F0D00C27599CCE0044698E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				37F0D01527599CCF0044698E /* LaunchScreen.storyboard */,
 				37F0D01827599CCF0044698E /* Info.plist */,
 				3752FF87275AF325008D5730 /* FeedViewController.swift */,
+				3752FF89275C16DE008D5730 /* FeedImageViewModel+PrototypeData.swift */,
 			);
 			path = Prototype;
 			sourceTree = "<group>";
@@ -141,6 +144,7 @@
 				37F0D00B27599CCE0044698E /* AppDelegate.swift in Sources */,
 				3752FF88275AF325008D5730 /* FeedViewController.swift in Sources */,
 				37F0D00D27599CCE0044698E /* SceneDelegate.swift in Sources */,
+				3752FF8A275C16DE008D5730 /* FeedImageViewModel+PrototypeData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
