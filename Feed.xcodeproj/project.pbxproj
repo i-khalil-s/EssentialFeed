@@ -822,6 +822,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ikhalil.FeedCacheIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -841,6 +842,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ikhalil.FeedCacheIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
