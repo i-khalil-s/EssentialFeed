@@ -19,6 +19,8 @@
 		3740ED7626FE37B700A8113C /* ValidateFeedCacheUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3740ED7526FE37B700A8113C /* ValidateFeedCacheUseCase.swift */; };
 		37488B9C26EBCF5B0080CA4A /* LocalFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37488B9B26EBCF5B0080CA4A /* LocalFeedLoader.swift */; };
 		37488B9E26EBD00A0080CA4A /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37488B9D26EBD00A0080CA4A /* FeedStore.swift */; };
+		3752FF9627618492008D5730 /* FeediOS.docc in Sources */ = {isa = PBXBuildFile; fileRef = 3752FF9527618492008D5730 /* FeediOS.docc */; };
+		3752FF9C27618492008D5730 /* FeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3752FF9227618492008D5730 /* FeediOS.framework */; };
 		37750940266A9B7F00C2B039 /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3775093F266A9B7F00C2B039 /* RemoteFeedLoader.swift */; };
 		3781521F268A969500050547 /* FeedAPIEndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781521E268A969500050547 /* FeedAPIEndToEndTests.swift */; };
 		37815221268A969500050547 /* Feed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371DDBB72667EEF300A40576 /* Feed.framework */; };
@@ -56,6 +58,13 @@
 			remoteGlobalIDString = 371DDBB62667EEF300A40576;
 			remoteInfo = Feed;
 		};
+		3752FF9D27618492008D5730 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 371DDBAE2667EEF300A40576 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3752FF9127618492008D5730;
+			remoteInfo = FeediOS;
+		};
 		37815222268A969500050547 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 371DDBAE2667EEF300A40576 /* Project object */;
@@ -88,6 +97,9 @@
 		3740ED7526FE37B700A8113C /* ValidateFeedCacheUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateFeedCacheUseCase.swift; sourceTree = "<group>"; };
 		37488B9B26EBCF5B0080CA4A /* LocalFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedLoader.swift; sourceTree = "<group>"; };
 		37488B9D26EBD00A0080CA4A /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
+		3752FF9227618492008D5730 /* FeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3752FF9527618492008D5730 /* FeediOS.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = FeediOS.docc; sourceTree = "<group>"; };
+		3752FF9B27618492008D5730 /* FeediOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeediOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3775093F266A9B7F00C2B039 /* RemoteFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoader.swift; sourceTree = "<group>"; };
 		3781521C268A969500050547 /* FeedAPIEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeedAPIEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3781521E268A969500050547 /* FeedAPIEndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAPIEndToEndTests.swift; sourceTree = "<group>"; };
@@ -131,6 +143,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3752FF8F27618492008D5730 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3752FF9827618492008D5730 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3752FF9C27618492008D5730 /* FeediOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		37815219268A969500050547 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -157,6 +184,8 @@
 				371DDBC42667EEF300A40576 /* FeedTests */,
 				3781521D268A969500050547 /* FeedAPIEndToEndTests */,
 				37DB9B88272865900094DF9E /* FeedCacheIntegrationTests */,
+				3752FF9327618492008D5730 /* FeediOS */,
+				3752FF9F27618492008D5730 /* FeediOSTests */,
 				371DDBB82667EEF300A40576 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -168,6 +197,8 @@
 				371DDBC02667EEF300A40576 /* FeedTests.xctest */,
 				3781521C268A969500050547 /* FeedAPIEndToEndTests.xctest */,
 				37DB9B87272865900094DF9E /* FeedCacheIntegrationTests.xctest */,
+				3752FF9227618492008D5730 /* FeediOS.framework */,
+				3752FF9B27618492008D5730 /* FeediOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -229,6 +260,21 @@
 				371DE7182700E91400DC23CF /* FeedCachePolicy.swift */,
 			);
 			path = "Feed Cache";
+			sourceTree = "<group>";
+		};
+		3752FF9327618492008D5730 /* FeediOS */ = {
+			isa = PBXGroup;
+			children = (
+				3752FF9527618492008D5730 /* FeediOS.docc */,
+			);
+			path = FeediOS;
+			sourceTree = "<group>";
+		};
+		3752FF9F27618492008D5730 /* FeediOSTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FeediOSTests;
 			sourceTree = "<group>";
 		};
 		3775093E266A9B6400C2B039 /* Feed API */ = {
@@ -319,6 +365,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3752FF8D27618492008D5730 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -356,6 +409,42 @@
 			name = FeedTests;
 			productName = FeedTests;
 			productReference = 371DDBC02667EEF300A40576 /* FeedTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3752FF9127618492008D5730 /* FeediOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3752FFA327618492008D5730 /* Build configuration list for PBXNativeTarget "FeediOS" */;
+			buildPhases = (
+				3752FF8D27618492008D5730 /* Headers */,
+				3752FF8E27618492008D5730 /* Sources */,
+				3752FF8F27618492008D5730 /* Frameworks */,
+				3752FF9027618492008D5730 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FeediOS;
+			productName = FeediOS;
+			productReference = 3752FF9227618492008D5730 /* FeediOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		3752FF9A27618492008D5730 /* FeediOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3752FFA627618492008D5730 /* Build configuration list for PBXNativeTarget "FeediOSTests" */;
+			buildPhases = (
+				3752FF9727618492008D5730 /* Sources */,
+				3752FF9827618492008D5730 /* Frameworks */,
+				3752FF9927618492008D5730 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3752FF9E27618492008D5730 /* PBXTargetDependency */,
+			);
+			name = FeediOSTests;
+			productName = FeediOSTests;
+			productReference = 3752FF9B27618492008D5730 /* FeediOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3781521B268A969500050547 /* FeedAPIEndToEndTests */ = {
@@ -400,7 +489,7 @@
 		371DDBAE2667EEF300A40576 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
 					371DDBB62667EEF300A40576 = {
@@ -409,6 +498,12 @@
 					};
 					371DDBBF2667EEF300A40576 = {
 						CreatedOnToolsVersion = 12.2;
+					};
+					3752FF9127618492008D5730 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+					3752FF9A27618492008D5730 = {
+						CreatedOnToolsVersion = 13.1;
 					};
 					3781521B268A969500050547 = {
 						CreatedOnToolsVersion = 12.2;
@@ -435,6 +530,8 @@
 				371DDBBF2667EEF300A40576 /* FeedTests */,
 				3781521B268A969500050547 /* FeedAPIEndToEndTests */,
 				37DB9B86272865900094DF9E /* FeedCacheIntegrationTests */,
+				3752FF9127618492008D5730 /* FeediOS */,
+				3752FF9A27618492008D5730 /* FeediOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -448,6 +545,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		371DDBBE2667EEF300A40576 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3752FF9027618492008D5730 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3752FF9927618492008D5730 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -514,6 +625,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3752FF8E27618492008D5730 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3752FF9627618492008D5730 /* FeediOS.docc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3752FF9727618492008D5730 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		37815218268A969500050547 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -541,6 +667,11 @@
 			isa = PBXTargetDependency;
 			target = 371DDBB62667EEF300A40576 /* Feed */;
 			targetProxy = 371DDBC22667EEF300A40576 /* PBXContainerItemProxy */;
+		};
+		3752FF9E27618492008D5730 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3752FF9127618492008D5730 /* FeediOS */;
+			targetProxy = 3752FF9D27618492008D5730 /* PBXContainerItemProxy */;
 		};
 		37815223268A969500050547 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -769,6 +900,114 @@
 			};
 			name = Release;
 		};
+		3752FFA427618492008D5730 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iKhalil.FeediOS;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3752FFA527618492008D5730 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iKhalil.FeediOS;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3752FFA727618492008D5730 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iKhalil.FeediOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3752FFA827618492008D5730 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iKhalil.FeediOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		37815224268A969500050547 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -873,6 +1112,24 @@
 			buildConfigurations = (
 				371DDBCF2667EEF300A40576 /* Debug */,
 				371DDBD02667EEF300A40576 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3752FFA327618492008D5730 /* Build configuration list for PBXNativeTarget "FeediOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3752FFA427618492008D5730 /* Debug */,
+				3752FFA527618492008D5730 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3752FFA627618492008D5730 /* Build configuration list for PBXNativeTarget "FeediOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3752FFA727618492008D5730 /* Debug */,
+				3752FFA827618492008D5730 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
