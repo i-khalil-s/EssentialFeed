@@ -115,6 +115,29 @@ final class FeedViewControllerTest: XCTestCase {
         XCTAssertEqual(loader.canceledImageURLs, [image0, image1].map { $0.url}, "Expected two cancelled image URL request once second view is also not visible anymore")
     }
     
+    func test_feedImageViewLoadingIndicator_isVisibleWhenImageIsLoading() {
+        
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.compleFeedLoading(with: [makeImage(), makeImage()])
+        
+        let view0 = sut.simulateFeedImageViewVisible(at: 0)
+        let view1 = sut.simulateFeedImageViewVisible(at: 1)
+        
+        XCTAssertEqual(view0?.isShowingImageLoadingIndicator, true, "Expect loading indicator for first view while loading first image")
+        XCTAssertEqual(view1?.isShowingImageLoadingIndicator, true, "Expect loading indicator for second view while loading second image")
+        
+        loader.compleImageLoading(at: 0)
+        XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expect no loading indicator for first view when loading first image completes successfully")
+        XCTAssertEqual(view1?.isShowingImageLoadingIndicator, true, "Expect loading indicator for second view when first view state changed")
+        
+        loader.compleImageLoadingWithError(at: 1)
+        XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expect loading indicator for first view when second view state changed")
+        XCTAssertEqual(view1?.isShowingImageLoadingIndicator, false, "Expect no loading indicator for second view when loading second image completes successfully")
+        
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
@@ -187,17 +210,29 @@ final class FeedViewControllerTest: XCTestCase {
             }
         }
         
-        private(set) var loadedImageURLs = [URL]()
+        private var imageRequests = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
+        
+        var loadedImageURLs: [URL] {
+            imageRequests.map {$0.url}
+        }
         private(set) var canceledImageURLs = [URL]()
         
-        func loadImageData(from url: URL) -> FeedImageDataLoaderTask {
-            loadedImageURLs.append(url)
+        func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
+            imageRequests.append((url, completion))
             return TaskSpy { [weak self] in
                 self?.canceledImageURLs.append(url)
                 
             }
         }
         
+        func compleImageLoading(with imageData: Data = Data(), at index: Int) {
+            imageRequests[index].completion(.success(imageData))
+        }
+        
+        func compleImageLoadingWithError(at index: Int) {
+            let error = NSError(domain: "an error", code: 0)
+            imageRequests[index].completion(.failure(error))
+        }
     }
 }
 
@@ -249,6 +284,10 @@ private extension FeedImageCell {
     
     var descriptionText: String? {
         return descriptionLabel.text
+    }
+    
+    var isShowingImageLoadingIndicator: Bool {
+        return feedImageContainer.isShimmering
     }
 }
 
