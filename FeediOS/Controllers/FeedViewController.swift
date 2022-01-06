@@ -9,35 +9,27 @@ import UIKit
 import Feed
 
 final public class FeedViewController: UITableViewController {
-    private var feedLoader: FeedLoader?
-    private var tableModel = [FeedImage]()
+    private var refreshController: FeedRefreshViewController?
+    private var tableModel = [FeedImage]() {
+        didSet { tableView.reloadData() }
+    }
     private var imageLoader: FeedImageDataLoader?
     private var tasks = [IndexPath: FeedImageDataLoaderTask]()
     
     public convenience init(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) {
         self.init()
-        self.feedLoader = feedLoader
+        self.refreshController = FeedRefreshViewController(feedLoader: feedLoader)
         self.imageLoader = imageLoader
     }
     
     public override func viewDidLoad() {
         
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(load), for: .valueChanged)
+        tableView.refreshControl = refreshController?.view
         tableView.prefetchDataSource = self
-        load()
-    }
-    
-    @objc private func load() {
-        refreshControl?.beginRefreshing()
-        feedLoader?.load { [weak self] result in
-            guard let self = self else { return }
-            if let feed = try? result.get() {
-                self.tableModel = feed
-                self.tableView.reloadData()
-            }
-            self.refreshControl?.endRefreshing()
+        refreshController?.onRefresh = { [weak self] feed in
+            self?.tableModel = feed
         }
+        refreshController?.refresh()
     }
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
