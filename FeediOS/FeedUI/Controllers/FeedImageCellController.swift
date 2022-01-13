@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Feed
 
 final class FeedImageCellController {
     
