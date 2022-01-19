@@ -5,7 +5,6 @@
 //  Created by Sergio Khalil Bello Garcia on 07/01/22.
 //
 
-import Foundation
 import Feed
 
 final class FeedViewModel {
