@@ -133,6 +133,7 @@
                         <connections>
                             <outlet property="dataSource" destination="zlw-HI-tcL" id="IgG-eg-NuG"/>
                             <outlet property="delegate" destination="zlw-HI-tcL" id="NuD-4q-0fw"/>
+                            <outlet property="prefetchDataSource" destination="zlw-HI-tcL" id="8yE-P5-b7i"/>
                         </connections>
                     </tableView>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="iQl-dz-Gnh">
