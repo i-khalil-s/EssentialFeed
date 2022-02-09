@@ -261,6 +261,18 @@ final class FeedViewControllerTest: XCTestCase {
         XCTAssertEqual(loader.canceledImageURLs, [image0, image1].map {$0.url}, "Expect second image cancelled once second image is not near visible")
         
     }
+    
+    func test_feedImageView_doesNotRenderLoadedImageWhenNotVisibleAnymore() {
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+        loader.compleFeedLoading(with: [makeImage()])
+        
+        let view = sut.simulateFeedImageViewNotVisible(at: 0)
+        loader.compleImageLoading(with: anyImageData())
+        
+        XCTAssertNil(view?.renderedImage, "Exected no rendered image when an image load finishes after the view is not visible anymore")
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
@@ -275,6 +287,10 @@ final class FeedViewControllerTest: XCTestCase {
     
     private func makeImage(description: String? = nil, location: String? = nil, url: URL = URL(string: "http://ant-url.com")!) -> FeedImage {
         return FeedImage(id: UUID(), description: description, location: location, url: url)
+    }
+    
+    private func anyImageData() -> Data {
+        UIImage.make(withColor: .red).pngData()!
     }
     
     private func assertThat(_ sut: FeedViewController, hasViewConfiguredFor image: FeedImage, at index: Int, file: StaticString = #file, line: UInt = #line) {
@@ -348,7 +364,7 @@ final class FeedViewControllerTest: XCTestCase {
             }
         }
         
-        func compleImageLoading(with imageData: Data = Data(), at index: Int) {
+        func compleImageLoading(with imageData: Data = Data(), at index: Int = 0) {
             imageRequests[index].completion(.success(imageData))
         }
         
@@ -369,12 +385,15 @@ private extension FeedViewController {
         return feedImageView(at: index) as? FeedImageCell
     }
     
-    func simulateFeedImageViewNotVisible(at index: Int = 0) {
+    @discardableResult
+    func simulateFeedImageViewNotVisible(at index: Int = 0) -> FeedImageCell? {
         let view = simulateFeedImageViewVisible(at: index)
         let delegate = tableView.delegate
         
         let indexPath = IndexPath(row: index, section: feedImageSection)
         delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: indexPath)
+        
+        return view
     }
     
     var isShowingLoadingIndicator: Bool {
