@@ -19,6 +19,7 @@ final public class FeedViewController: UITableViewController {
     }
     
     public override func viewDidLoad() {
+        self.title = "My Feed"
         refresh()
     }
     
