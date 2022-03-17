@@ -1,0 +1,9 @@
+/* 
+  Feed.strings
+  Feed
+
+  Created by Sergio Khalil Bello Garcia on 16/03/22.
+  
+*/
+"FEED_VIEW_TITLE" = "My Feed";
+"FEED_VIEW_CONNECTION_ERROR" = "Could not connect to server";
