@@ -9,75 +9,12 @@ import Foundation
 import XCTest
 import Feed
 
-struct FeedErrorViewModel {
-    let message: String?
-    
-    static var noError: FeedErrorViewModel {
-        return FeedErrorViewModel(message: nil)
-    }
-    
-    static func error(message: String) -> FeedErrorViewModel {
-        return FeedErrorViewModel(message: message)
-    }
-}
-
-protocol ErrorView {
-    func display(_ viewModel: FeedErrorViewModel)
-}
-
-protocol FeedView {
-    func display(_ viewModel: FeedViewModel)
-}
-
-struct FeedViewModel {
-    let feed: [FeedImage]
-}
-
-struct FeedLoadingViewModel {
-    let isLoading: Bool
-}
-
-protocol FeedLoadingView {
-    func display(_ viewModel: FeedLoadingViewModel)
-}
-
-final class FeedPresenter {
-    private let feedView: FeedView
-    private let errorView: ErrorView
-    private let loadingView: FeedLoadingView
-    
-    internal init(feedView: FeedView, errorView: ErrorView, loadingView: FeedLoadingView) {
-        self.feedView = feedView
-        self.errorView = errorView
-        self.loadingView = loadingView
-    }
-    
-    func didStartLoadingFeed() {
-        errorView.display(.noError)
-        loadingView.display(FeedLoadingViewModel(isLoading: true))
-    }
-    
-    func didFinishLoadingFeed(with feed: [FeedImage]) {
-        feedView.display(FeedViewModel(feed: feed))
-        loadingView.display(.init(isLoading: false))
-    }
-    
-    func didFinishLoadingFeed(with error: Error) {
-        errorView.display(.error(message: feedLoadError))
-        loadingView.display(.init(isLoading: false))
-    }
-    
-    private var feedLoadError: String {
-        return NSLocalizedString(
-            "FEED_VIEW_CONNECTION_ERROR",
-            tableName: "Feed",
-            bundle: Bundle(for: FeedPresenter.self),
-            comment: "Error message displayed wwhen we cannot display image from server"
-        )
-    }
-}
-
 final class FeedPresenterTests: XCTestCase {
+    
+    func test_title_isLocalized() {
+        XCTAssertEqual(FeedPresenter.title, localized("FEED_VIEW_TITLE"))
+    }
+    
     func test_init_doesNotSendMessageToView() {
         let (_, view) = makeSUT()
         
