@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Feed
 
 protocol FeedViewControllerDelegate {
     func didRequestFeedRefresh()
@@ -60,11 +61,20 @@ extension FeedViewController: UITableViewDataSourcePrefetching {
 }
 
 extension FeedViewController: FeedLoadingView {
-    func display(_ viewModel: FeedLoadingViewModel) {
+    public func display(_ viewModel: FeedLoadingViewModel) {
         if viewModel.isLoading {
             refreshControl?.beginRefreshing()
         } else {
             refreshControl?.endRefreshing()
         }
+    }
+}
+
+extension FeedViewController: ErrorView {
+    public func display(_ viewModel: FeedErrorViewModel) {
+        let alert = UIAlertController(title: viewModel.message, message: nil, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Ok", style: .default)
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
     }
 }
