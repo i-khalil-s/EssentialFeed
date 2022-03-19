@@ -20,7 +20,6 @@
 		37488B9C26EBCF5B0080CA4A /* LocalFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37488B9B26EBCF5B0080CA4A /* LocalFeedLoader.swift */; };
 		37488B9E26EBD00A0080CA4A /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37488B9D26EBD00A0080CA4A /* FeedStore.swift */; };
 		3749E52127BB316F00698B02 /* FeedViewControllerTest+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749E52027BB316F00698B02 /* FeedViewControllerTest+Localization.swift */; };
-		3749E52827BC7AAC00698B02 /* FeedLocalizationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749E52727BC7AAC00698B02 /* FeedLocalizationTest.swift */; };
 		3749E52A27BDD48E00698B02 /* MainQueueDispatchDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749E52927BDD48E00698B02 /* MainQueueDispatchDecorator.swift */; };
 		3749E52C27C06CE000698B02 /* WeakRefVirtualProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749E52B27C06CE000698B02 /* WeakRefVirtualProxy.swift */; };
 		3749E52E27C06D3700698B02 /* FeedViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749E52D27C06D3700698B02 /* FeedViewAdapter.swift */; };
@@ -72,6 +71,7 @@
 		37BB71CB26850E2F00FD4601 /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BB71CA26850E2F00FD4601 /* URLSessionHTTPClient.swift */; };
 		37D37F762673CA13009ED8DE /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D37F752673CA13009ED8DE /* HTTPClient.swift */; };
 		37D37F7A2673CAB3009ED8DE /* FeedItemsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D37F792673CAB3009ED8DE /* FeedItemsMapper.swift */; };
+		37D65E9A27E5598300668414 /* FeedLocalizationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749E52727BC7AAC00698B02 /* FeedLocalizationTest.swift */; };
 		37DB9B8A272865900094DF9E /* FeedCacheIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DB9B89272865900094DF9E /* FeedCacheIntegrationTests.swift */; };
 		37DB9B8C272865900094DF9E /* Feed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371DDBB72667EEF300A40576 /* Feed.framework */; };
 		37DB9B92272869680094DF9E /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BB71C42684F3C700FD4601 /* XCTestCase+MemoryLeakTracking.swift */; };
@@ -304,6 +304,7 @@
 				373F95D226E29F9E0083C3FF /* Feed Cache */,
 				37BB71C32684F3A600FD4601 /* Helpers */,
 				371DDBC52667EEF300A40576 /* FeedTests.swift */,
+				3749E52727BC7AAC00698B02 /* FeedLocalizationTest.swift */,
 				371DDBC72667EEF300A40576 /* Info.plist */,
 				37D37F7D26740A70009ED8DE /* Feed API */,
 			);
@@ -370,7 +371,6 @@
 				3749E51F27BB315C00698B02 /* Helpers */,
 				3752FFAA2772A5E2008D5730 /* FeedUIIntegrationTests.swift */,
 				3752FFA92772A5E1008D5730 /* FeediOSTests-Bridging-Header.h */,
-				3749E52727BC7AAC00698B02 /* FeedLocalizationTest.swift */,
 			);
 			path = FeediOSTests;
 			sourceTree = "<group>";
@@ -733,7 +733,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37D65E9827E411ED00668414 /* Info.plist in Resources */,
 				3799662527E40C21008F2001 /* Feed.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -742,7 +741,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37D65E9927E4123D00668414 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -824,6 +822,7 @@
 				371DDBC62667EEF300A40576 /* FeedTests.swift in Sources */,
 				37B7CC1A2719EA7600999683 /* FeedStoreSpecs.swift in Sources */,
 				37A708DB26824BE200411CFF /* URLSessionHTTPClientTest.swift in Sources */,
+				37D65E9A27E5598300668414 /* FeedLocalizationTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -856,7 +855,6 @@
 			files = (
 				3752FFAB2772A5E2008D5730 /* FeedUIIntegrationTests.swift in Sources */,
 				3752FFB22772AB00008D5730 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
-				3749E52827BC7AAC00698B02 /* FeedLocalizationTest.swift in Sources */,
 				3749E52127BB316F00698B02 /* FeedViewControllerTest+Localization.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
