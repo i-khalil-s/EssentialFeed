@@ -19,8 +19,9 @@ public final class LocalFeedLoader {
     
 }
 extension LocalFeedLoader {
+    public typealias ValidationResult = Result<Void, Error>
     
-    public func validateCache() {
+    public func validateCache(completion: @escaping (ValidationResult) -> Void) {
         store.retreive { [weak self] result in
             
             guard let self = self else { return }
@@ -28,12 +29,13 @@ extension LocalFeedLoader {
             switch result {
             
             case .failure(_):
-                self.store.deleteCachedFeed { _ in }
+                self.store.deleteCachedFeed(completion: completion)
                 
             case let .success(.some(cache)) where !FeedCachePolicy.isValid(cache.timestamp, against: self.currentDate()):
-                self.store.deleteCachedFeed { _ in }
+                self.store.deleteCachedFeed(completion: completion)
                 
-            case .success: break
+            case .success:
+                completion(.success(()))
             }
         }
     }

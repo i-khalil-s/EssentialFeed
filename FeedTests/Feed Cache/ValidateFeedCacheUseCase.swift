@@ -19,7 +19,7 @@ class ValidateFeedCacheUseCase: XCTestCase {
     func test_validateCache_deletesCacheOnRetreivalError() {
         let (sut, store) = makeSUT()
         
-        sut.validateCache()
+        sut.validateCache { _ in }
         
         store.completeRetreival(with: anyNSError())
         
@@ -29,7 +29,7 @@ class ValidateFeedCacheUseCase: XCTestCase {
     func test_validateCache_doesNotDeleteCacheOnEmptyCache() {
         let (sut, store) = makeSUT()
         
-        sut.validateCache()
+        sut.validateCache { _ in }
         
         store.completeRetreivalWithEmptyCache()
         
@@ -43,7 +43,7 @@ class ValidateFeedCacheUseCase: XCTestCase {
         
         let (sut, store) = makeSUT(currentDate: {fixCurrentDate})
         
-        sut.validateCache()
+        sut.validateCache { _ in }
         store.completeRetreival(with: feed.local, timestamp: nonExpiredTimestamp)
         
         XCTAssertEqual(store.receivedMessages, [.retreive])
@@ -56,7 +56,7 @@ class ValidateFeedCacheUseCase: XCTestCase {
         
         let (sut, store) = makeSUT(currentDate: {fixCurrentDate})
         
-        sut.validateCache()
+        sut.validateCache { _ in }
         store.completeRetreival(with: feed.local, timestamp: experationTimestamp)
         
         XCTAssertEqual(store.receivedMessages, [.retreive, .deleteCachedFeed])
@@ -69,7 +69,7 @@ class ValidateFeedCacheUseCase: XCTestCase {
         
         let (sut, store) = makeSUT(currentDate: {fixCurrentDate})
         
-        sut.validateCache()
+        sut.validateCache { _ in }
         store.completeRetreival(with: feed.local, timestamp: expiredTimestamp)
         
         XCTAssertEqual(store.receivedMessages, [.retreive, .deleteCachedFeed])
@@ -79,7 +79,7 @@ class ValidateFeedCacheUseCase: XCTestCase {
         let store = FeedStoreSpy()
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store,currentDate: Date.init)
         
-        sut?.validateCache()
+        sut?.validateCache { _ in }
         sut = nil
         store.completeRetreival(with: anyNSError())
         
