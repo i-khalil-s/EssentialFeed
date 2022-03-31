@@ -25,8 +25,10 @@ final class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
 final class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     
     func test_load_loadsPrimaryImageData() {
-        let primary = FeedImageDataLoaderStub(result: .success(anyImageData()), url: anyURL())
-        let fallback = FeedImageDataLoaderStub(result: .success(anyImageData(withColor: .blue)), url: anyURL())
+        let primaryResult: FeedImageDataLoader.Result = .success(anyImageData())
+        let fallbackResult: FeedImageDataLoader.Result = .success(anyImageData(withColor: .blue))
+        let primary = FeedImageDataLoaderStub(result: primaryResult, url: anyURL())
+        let fallback = FeedImageDataLoaderStub(result: fallbackResult, url: anyURL())
         let sut = FeedImageDataLoaderWithFallbackComposite(
             primaryImageDataLoader: primary,
             secondaryImageDataLoader: fallback
@@ -44,6 +46,27 @@ final class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         }
         
         wait(for: [exp], timeout: 0.5)
+    }
+    
+    // MARK: Helper
+    private func makeSUT(
+        primaryResult: FeedImageDataLoader.Result,
+        fallBackResult: FeedImageDataLoader.Result,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> FeedImageDataLoader {
+        let primaryLoader = FeedImageDataLoaderStub(result: primaryResult, url: anyURL())
+        let fallbackLoader = FeedImageDataLoaderStub(result: fallBackResult, url: anyURL())
+        let sut = FeedImageDataLoaderWithFallbackComposite(
+            primaryImageDataLoader: primaryLoader,
+            secondaryImageDataLoader: fallbackLoader
+        )
+        
+        trackForMemoryLeaks(primaryLoader, file: file, line: line)
+        trackForMemoryLeaks(fallbackLoader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        
+        return sut
     }
 }
 
