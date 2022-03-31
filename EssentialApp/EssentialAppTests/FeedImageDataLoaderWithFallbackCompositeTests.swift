@@ -17,8 +17,25 @@ final class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
         self.secondaryImageDataLoader = secondaryImageDataLoader
     }
     
+    private class TaskWrapper: FeedImageDataLoaderTask {
+        var wrapped: FeedImageDataLoaderTask?
+        func cancel() {
+            wrapped?.cancel()
+        }
+    }
+    
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-        primaryImageDataLoader.loadImageData(from: url, completion: completion)
+        let task = TaskWrapper()
+        task.wrapped = primaryImageDataLoader.loadImageData(from: url) { [weak self] result in
+            switch result {
+            case .success:
+                completion(result)
+            case .failure:
+                task.wrapped = self?.secondaryImageDataLoader.loadImageData(from: url, completion: completion)
+            }
+        }
+        
+        return task
     }
 }
 
@@ -28,6 +45,29 @@ final class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         let primaryResult: FeedImageDataLoader.Result = .success(anyImageData())
         let fallbackResult: FeedImageDataLoader.Result = .success(anyImageData(withColor: .blue))
         let primary = FeedImageDataLoaderStub(result: primaryResult, url: anyURL())
+        let fallback = FeedImageDataLoaderStub(result: fallbackResult, url: anyURL())
+        let sut = FeedImageDataLoaderWithFallbackComposite(
+            primaryImageDataLoader: primary,
+            secondaryImageDataLoader: fallback
+        )
+        let exp = expectation(description: "Wait for completion block")
+        
+        _ = sut.loadImageData(from: anyURL()) { result in
+            switch result {
+            case .success(let data):
+                XCTAssertEqual(anyImageData(), data)
+            case .failure:
+                XCTFail("Expected success but got \(result) instead")
+            }
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 0.5)
+    }
+    
+    func test_load_loadsFallBackOnFailedPrimaryImageData() {
+        let fallbackResult: FeedImageDataLoader.Result = .success(anyImageData())
+        let primary = FeedImageDataLoaderStub(result: .failure(anyNSError()), url: anyURL())
         let fallback = FeedImageDataLoaderStub(result: fallbackResult, url: anyURL())
         let sut = FeedImageDataLoaderWithFallbackComposite(
             primaryImageDataLoader: primary,
