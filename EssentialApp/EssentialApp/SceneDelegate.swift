@@ -8,6 +8,7 @@
 import UIKit
 import Feed
 import FeediOS
+import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -22,16 +23,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let url = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5d1c78f21e661a0001ce7cfd/1562147059075/feed-case-study-v1-api-feed.json")!
         let session = URLSession(configuration: .ephemeral)
-        let client = URLSessionHTTPClient(session: session)
-        let feedLoader = RemoteFeedLoader(url: url, client: client)
-        let feedImageDataLoader = RemoteFeedImageDataLoader(client: client)
+        let remoteClient = URLSessionHTTPClient(session: session)
+        let remoteFeedLoader = RemoteFeedLoader(url: url, client: remoteClient)
+        let remoteFeedImageDataLoader = RemoteFeedImageDataLoader(client: remoteClient)
         
-        let feedViewController = FeedUIComposer.feedComposedWith(
-            feedLoader: feedLoader,
-            imageLoader: feedImageDataLoader
+        let localStoreURL = NSPersistentContainer
+            .defaultDirectoryURL()
+            .appendingPathComponent("feed-store.sqlite")
+        
+        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL)
+        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
+        let localFeedImageDataLoader = LocalFeedImageDataLoader(store: localStore)
+        
+        window?.rootViewController = FeedUIComposer.feedComposedWith(
+            feedLoader: FeedLoaderWithFallbackComposite(
+                primary: remoteFeedLoader,
+                fallback: FeedLoaderWithFallbackComposite(
+                    primary: remoteFeedLoader,
+                    fallback: localFeedLoader
+                )
+            ),
+            imageLoader: FeedImageDataLoaderWithFallbackComposite(
+                primaryImageDataLoader: localFeedImageDataLoader,
+                secondaryImageDataLoader: remoteFeedImageDataLoader
+            )
         )
         
-        window?.rootViewController = feedViewController
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
