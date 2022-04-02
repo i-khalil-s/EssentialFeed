@@ -23,6 +23,7 @@
 		37812A5827ED3DAB0070E802 /* Feed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 37812A5527ED3DAB0070E802 /* Feed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37812A5927ED3DAB0070E802 /* FeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37812A5627ED3DAB0070E802 /* FeediOS.framework */; };
 		37812A5A27ED3DAB0070E802 /* FeediOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 37812A5627ED3DAB0070E802 /* FeediOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		37EE1CA427F7CF3200B36473 /* FeedImageDataLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE1CA327F7CF3200B36473 /* FeedImageDataLoaderWithFallbackComposite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		37812A4E27EBF2DA0070E802 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37812A5527ED3DAB0070E802 /* Feed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Feed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37812A5627ED3DAB0070E802 /* FeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		37EE1CA327F7CF3200B36473 /* FeedImageDataLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 				37812A4B27EBF2DA0070E802 /* LaunchScreen.storyboard */,
 				37812A4E27EBF2DA0070E802 /* Info.plist */,
 				3702D4F727F5301300CDE5FF /* FeedLoaderWithFallbackComposite.swift */,
+				37EE1CA327F7CF3200B36473 /* FeedImageDataLoaderWithFallbackComposite.swift */,
 			);
 			path = EssentialApp;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 				37812A4127EBF2D90070E802 /* AppDelegate.swift in Sources */,
 				3702D4F827F5301300CDE5FF /* FeedLoaderWithFallbackComposite.swift in Sources */,
 				37812A4327EBF2D90070E802 /* SceneDelegate.swift in Sources */,
+				37EE1CA427F7CF3200B36473 /* FeedImageDataLoaderWithFallbackComposite.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
