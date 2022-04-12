@@ -42,9 +42,9 @@ extension LocalFeedLoader {
     
 }
 
-extension LocalFeedLoader {
+extension LocalFeedLoader: FeedCache {
     
-    public typealias SavedResult = Result<Void, Error>
+    public typealias SavedResult = FeedCache.Result
     
     public func save(feed: [FeedImage], completion: @escaping (SavedResult) -> Void) {
         store.deleteCachedFeed { [weak self] deletionError in
