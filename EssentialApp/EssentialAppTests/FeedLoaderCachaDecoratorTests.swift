@@ -25,9 +25,10 @@ final class FeedLoaderCachaDecorator: FeedLoader {
     
     func load(completion: @escaping (FeedLoader.Result) -> Void) {
         decoratee.load{ [weak self] result in
-            self?.cache.save(feed: (try? result.get()) ?? []) { _ in
-                completion(result)
+            if let feed = try? result.get() {
+                self?.cache.save(feed: feed) { _ in }
             }
+            completion(result)
         }
     }
 }
@@ -55,6 +56,14 @@ final class FeedLoaderCachaDecoratorTests: XCTestCase, FeedLoaderTestCase {
         
         sut.load { _ in }
         XCTAssertEqual(cache.messages, [.save(feed)], "Expected to cache on success")
+    }
+    
+    func test_load_doesNotCacheOnLoaderFailure() {
+        let cache = CacheSpy()
+        let sut = makeSUT(loader: .failure(anyNSError()), cache: cache)
+        
+        sut.load { _ in }
+        XCTAssertTrue(cache.messages.isEmpty, "Expected to NOT cache on failure")
     }
     
     // MARK: Helpers:
