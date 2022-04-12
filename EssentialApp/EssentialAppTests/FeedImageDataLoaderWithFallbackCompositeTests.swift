@@ -93,25 +93,3 @@ final class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         wait(for: [exp], timeout: 0.5)
     }
 }
-
-private class FeedImageDataLoaderStub: FeedImageDataLoader {
-    private let result: FeedImageDataLoader.Result
-    private let url: URL
-    
-    init(result: Result<Data, Error>, url: URL) {
-        self.result = result
-        self.url = url
-    }
-    
-    private class TaskWrapper: FeedImageDataLoaderTask {
-        var wrapped: FeedImageDataLoaderTask?
-        func cancel() {
-            wrapped?.cancel()
-        }
-    }
-    
-    func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-        completion(result)
-        return TaskWrapper()
-    }
-}

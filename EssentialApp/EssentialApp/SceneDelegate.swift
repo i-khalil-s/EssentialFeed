@@ -39,7 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             feedLoader: FeedLoaderWithFallbackComposite(
                 primary: remoteFeedLoader,
                 fallback: FeedLoaderWithFallbackComposite(
-                    primary: remoteFeedLoader,
+                    primary: FeedLoaderCachaDecorator(decoratee: remoteFeedLoader, cache: localFeedLoader),
                     fallback: localFeedLoader
                 )
             ),
