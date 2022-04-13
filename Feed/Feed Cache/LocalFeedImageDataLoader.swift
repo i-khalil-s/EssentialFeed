@@ -15,9 +15,7 @@ import Foundation
      }
  }
 
- extension LocalFeedImageDataLoader {
-     public typealias SaveResult = Result<Void, Error>
-
+extension LocalFeedImageDataLoader: FeedImageCache {
      public enum SaveError: Error {
          case failed
      }
