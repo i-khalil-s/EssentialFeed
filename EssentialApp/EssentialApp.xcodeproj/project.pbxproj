@@ -30,6 +30,7 @@
 		37F6C9B12806404A0010A255 /* FeedLoaderCachaDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6C9B02806404A0010A255 /* FeedLoaderCachaDecorator.swift */; };
 		37F6C9B3280642B90010A255 /* FeedLoaderImageCacheDecoratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6C9B2280642B90010A255 /* FeedLoaderImageCacheDecoratorTests.swift */; };
 		37F6C9B5280647480010A255 /* FeedImageDataLoaderStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6C9B4280647480010A255 /* FeedImageDataLoaderStub.swift */; };
+		37F6C9B9280796130010A255 /* FeedLoaderImageCacheDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6C9B8280796130010A255 /* FeedLoaderImageCacheDecorator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		37F6C9B02806404A0010A255 /* FeedLoaderCachaDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderCachaDecorator.swift; sourceTree = "<group>"; };
 		37F6C9B2280642B90010A255 /* FeedLoaderImageCacheDecoratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderImageCacheDecoratorTests.swift; sourceTree = "<group>"; };
 		37F6C9B4280647480010A255 /* FeedImageDataLoaderStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoaderStub.swift; sourceTree = "<group>"; };
+		37F6C9B8280796130010A255 /* FeedLoaderImageCacheDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderImageCacheDecorator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 				3702D4F727F5301300CDE5FF /* FeedLoaderWithFallbackComposite.swift */,
 				37EE1CA327F7CF3200B36473 /* FeedImageDataLoaderWithFallbackComposite.swift */,
 				37F6C9B02806404A0010A255 /* FeedLoaderCachaDecorator.swift */,
+				37F6C9B8280796130010A255 /* FeedLoaderImageCacheDecorator.swift */,
 			);
 			path = EssentialApp;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37812A4527EBF2D90070E802 /* ViewController.swift in Sources */,
+				37F6C9B9280796130010A255 /* FeedLoaderImageCacheDecorator.swift in Sources */,
 				37812A4127EBF2D90070E802 /* AppDelegate.swift in Sources */,
 				3702D4F827F5301300CDE5FF /* FeedLoaderWithFallbackComposite.swift in Sources */,
 				37F6C9B12806404A0010A255 /* FeedLoaderCachaDecorator.swift in Sources */,
