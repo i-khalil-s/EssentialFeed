@@ -63,6 +63,16 @@ final class FeedLoaderImageCacheDecoratorTests: XCTestCase {
         XCTAssertTrue(!cache.messages.isEmpty)
     }
     
+    func test_load_doesNotCachesImageDateOnFailure() {
+        let anyError = anyNSError()
+        let loader = FeedImageDataLoaderStub(result: .failure(anyError), url: anyURL())
+        let (sut, cache) = makeSUT(loader: loader)
+        
+        expect(sut, from: anyURL(), toCompleteWith: .failure(anyError))
+        
+        XCTAssertTrue(cache.messages.isEmpty)
+    }
+    
     // MARK: Helpers
     private func makeSUT(loader: FeedImageDataLoader, file: StaticString = #file, line: UInt = #line) -> (FeedLoaderImageCacheDecorator, ImageCacheSpy) {
         let cache = ImageCacheSpy()
