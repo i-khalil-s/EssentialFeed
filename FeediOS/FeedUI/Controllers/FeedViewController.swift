@@ -8,23 +8,26 @@
 import UIKit
 import Feed
 
-protocol FeedViewControllerDelegate {
+public protocol FeedViewControllerDelegate {
     func didRequestFeedRefresh()
 }
 
 final public class FeedViewController: UITableViewController {
-    var delegate: FeedViewControllerDelegate?
-    
-    var tableModel = [FeedImageCellController]() {
+    private var tableModel = [FeedImageCellController]() {
         didSet { self.tableView.reloadData() }
     }
     
+    public var delegate: FeedViewControllerDelegate?
     public override func viewDidLoad() {
         refresh()
     }
     
     @IBAction private func refresh() {
         delegate?.didRequestFeedRefresh()
+    }
+    
+    public func display(_ cellControllers: [FeedImageCellController]) {
+        tableModel = cellControllers
     }
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

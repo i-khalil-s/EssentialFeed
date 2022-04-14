@@ -6,6 +6,7 @@
 //
 
 import Feed
+import FeediOS
 
 final class FeedLoaderPresentationAdapter: FeedViewControllerDelegate {
     
