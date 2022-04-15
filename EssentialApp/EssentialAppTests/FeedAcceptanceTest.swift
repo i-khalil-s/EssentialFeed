@@ -44,7 +44,7 @@ final class FeedAcceptanceTest: XCTestCase {
         
         enterBackground(with: store)
         
-        XCTAssertNil(store.feedCache, "Expected expired cache to be gone")
+        XCTAssertNil(store.cachedFeed, "Expected expired cache to be gone")
     }
     
     func test_onEnteringBsckGround_keepsNonExpiredFeedCache() {
@@ -52,7 +52,7 @@ final class FeedAcceptanceTest: XCTestCase {
         
         enterBackground(with: store)
         
-        XCTAssertNotNil(store.feedCache, "Expected cache not to be nil")
+        XCTAssertNotNil(store.cachedFeed, "Expected cache not to be nil")
     }
     
     //MARK: Helpers
@@ -96,7 +96,7 @@ final class FeedAcceptanceTest: XCTestCase {
     }
     
     private class InMemoryFeedStore: FeedStore, FeedImageDataStore {
-        private var cachedFeed: CachedFeed?
+        var cachedFeed: CachedFeed?
         private var feedImageDataCache: [URL: Data] = [:]
         
         private init(cachedFeed: CachedFeed? = nil) {
