@@ -27,6 +27,22 @@ class FeedSnapshotTests: XCTestCase {
         record(snapshot: sut.snapshot(), named: "FEED_WITH_CONTENT")
     }
     
+    func test_feedWithErrorMessage() {
+        let sut = makeSUT()
+        
+        sut.display(.error(message: "An error message"))
+        
+        record(snapshot: sut.snapshot(), named: "FEED_WITH_ErrorMessage")
+    }
+    
+    func test_feedWithFailedImageLoading() {
+        let sut = makeSUT()
+        
+        sut.display(feedWithFailedImageLoading())
+        
+        record(snapshot: sut.snapshot(), named: "FEED_WITH_FAILED_IMAGE_LOOADING")
+    }
+    
     // MARK: Helpers
     private func makeSUT() -> FeedViewController {
         let bundle = Bundle(for: FeedViewController.self)
@@ -42,8 +58,15 @@ class FeedSnapshotTests: XCTestCase {
     
     private func feedWithContent() -> [ImageStub] {
         return [
-            .init(description: "The East Side Gallery memorial in Berlin-Friedrichshain is a permanent open-air gallery on the longest surviving section of the Berlin Wall in Mühlenstraße.", location: "    Mühlenstrasse (Mill Street)\nBerlin, Germany", image: UIImage.make(withColor: .red)),
+            .init(description: "The East Side Gallery memorial in Berlin-Friedrichshain is a permanent open-air gallery on the longest surviving section of the Berlin Wall in Mühlenstraße.", location: "Mühlenstrasse (Mill Street)\nBerlin, Germany", image: UIImage.make(withColor: .red)),
             .init(description: "Angel de la independencia", location: "Mexico City", image: UIImage.make(withColor: .green))
+        ]
+    }
+    
+    private func feedWithFailedImageLoading() -> [ImageStub] {
+        return [
+            .init(description: nil, location: "Mühlenstrasse (Mill Street)\nBerlin, Germany", image: nil),
+            .init(description: nil, location: "Mexico City", image: nil)
         ]
     }
     
