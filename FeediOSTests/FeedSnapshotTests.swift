@@ -8,6 +8,7 @@
 import Foundation
 import XCTest
 import FeediOS
+@testable import Feed
 
 class FeedSnapshotTests: XCTestCase {
     func test_emptyFeed() {
@@ -16,6 +17,14 @@ class FeedSnapshotTests: XCTestCase {
         sut.display(emptyFeed())
         
         record(snapshot: sut.snapshot(), named: "EMPTY_FEED")
+    }
+    
+    func test_feedWithContent() {
+        let sut = makeSUT()
+        
+        sut.display(feedWithContent())
+        
+        record(snapshot: sut.snapshot(), named: "FEED_WITH_CONTENT")
     }
     
     // MARK: Helpers
@@ -29,6 +38,13 @@ class FeedSnapshotTests: XCTestCase {
     
     private func emptyFeed() -> [FeedImageCellController] {
         return []
+    }
+    
+    private func feedWithContent() -> [ImageStub] {
+        return [
+            .init(description: "The East Side Gallery memorial in Berlin-Friedrichshain is a permanent open-air gallery on the longest surviving section of the Berlin Wall in Mühlenstraße.", location: "    Mühlenstrasse (Mill Street)\nBerlin, Germany", image: UIImage.make(withColor: .red)),
+            .init(description: "Angel de la independencia", location: "Mexico City", image: UIImage.make(withColor: .green))
+        ]
     }
     
     private func record(snapshot: UIImage, named: String, file: StaticString = #file, line: UInt = #line) {
@@ -55,6 +71,18 @@ class FeedSnapshotTests: XCTestCase {
     }
 }
 
+private extension FeedViewController {
+    func display(_ stubs: [ImageStub]) {
+        let cells: [FeedImageCellController] = stubs.map{ stub in
+            let cellController = FeedImageCellController(delegate: stub)
+            stub.controller = cellController
+            return cellController
+        }
+        
+        display(cells)
+    }
+}
+
 extension UIViewController {
     func snapshot() -> UIImage {
         let rendered = UIGraphicsImageRenderer(bounds: view.bounds)
@@ -62,4 +90,27 @@ extension UIViewController {
             view.layer.render(in: action.cgContext)
         }
     }
+}
+
+private class ImageStub: FeedImageCellControllerDelegate {
+    weak var controller: FeedImageCellController?
+    let viewModel: FeedImageViewModel<UIImage>
+    
+    init(description: String?, location: String?, image: UIImage?) {
+        viewModel = FeedImageViewModel(
+            description: description,
+            location: location,
+            image: image,
+            isLoading: false,
+            shouldRetry: image == nil
+        )
+    }
+    
+    func didRequestImage() {
+        controller?.display(viewModel)
+    }
+    
+    func didCancelImageRequest() {}
+    
+    
 }
