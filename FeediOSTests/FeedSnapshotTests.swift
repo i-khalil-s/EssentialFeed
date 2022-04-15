@@ -16,7 +16,7 @@ class FeedSnapshotTests: XCTestCase {
         
         sut.display(emptyFeed())
         
-        record(snapshot: sut.snapshot(), named: "EMPTY_FEED")
+        assert(snapshot: sut.snapshot(), named: "EMPTY_FEED")
     }
     
     func test_feedWithContent() {
@@ -24,7 +24,7 @@ class FeedSnapshotTests: XCTestCase {
         
         sut.display(feedWithContent())
         
-        record(snapshot: sut.snapshot(), named: "FEED_WITH_CONTENT")
+        assert(snapshot: sut.snapshot(), named: "FEED_WITH_CONTENT")
     }
     
     func test_feedWithErrorMessage() {
@@ -32,7 +32,7 @@ class FeedSnapshotTests: XCTestCase {
         
         sut.display(.error(message: "An error message"))
         
-        record(snapshot: sut.snapshot(), named: "FEED_WITH_ErrorMessage")
+        assert(snapshot: sut.snapshot(), named: "FEED_WITH_ErrorMessage")
     }
     
     func test_feedWithFailedImageLoading() {
@@ -40,7 +40,7 @@ class FeedSnapshotTests: XCTestCase {
         
         sut.display(feedWithFailedImageLoading())
         
-        record(snapshot: sut.snapshot(), named: "FEED_WITH_FAILED_IMAGE_LOOADING")
+        assert(snapshot: sut.snapshot(), named: "FEED_WITH_FAILED_IMAGE_LOOADING")
     }
     
     // MARK: Helpers
@@ -70,11 +70,31 @@ class FeedSnapshotTests: XCTestCase {
         ]
     }
     
-    private func record(snapshot: UIImage, named: String, file: StaticString = #file, line: UInt = #line) {
-        guard let snapshotData = snapshot.pngData() else {
-            XCTFail("Failed to generate a PNG representation", file: file, line:  line)
+    private func assert(snapshot: UIImage, named name: String, file: StaticString = #file, line: UInt = #line) {
+        let snapshotData = makeSnapshotData(snapshot: snapshot, file: file, line: line)
+        
+        let snapshotURL = URL(fileURLWithPath: String(describing: file))
+            .deletingLastPathComponent()
+            .appendingPathComponent("snapshots")
+            .appendingPathComponent("\(name).png")
+        
+        guard let storedSnapshotData = try? Data(contentsOf: snapshotURL) else {
+            XCTFail("Failed to load stored snapshot at \(snapshotURL). Use `record` method to store a snapshot b efore asserting", file: file, line: line)
             return
         }
+        
+        if snapshotData != storedSnapshotData {
+            let temporalySnapshotURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+                .appendingPathComponent(snapshotURL.lastPathComponent)
+            
+            try? snapshotData?.write(to: temporalySnapshotURL)
+            
+            XCTFail("Snapshots does not match stored one. New snapshot URL: \(temporalySnapshotURL), stored snapshot: \(storedSnapshotData)")
+        }
+    }
+    
+    private func record(snapshot: UIImage, named: String, file: StaticString = #file, line: UInt = #line) {
+        let snapshotData = makeSnapshotData(snapshot: snapshot, file: file, line: line)
         
         var snapshotURL = URL(fileURLWithPath: String(describing: file))
             .deletingLastPathComponent()
@@ -87,10 +107,18 @@ class FeedSnapshotTests: XCTestCase {
             )
             snapshotURL = snapshotURL.appendingPathComponent("\(named).png")
             
-            try snapshotData.write(to: snapshotURL)
+            try snapshotData?.write(to: snapshotURL)
         } catch {
             XCTFail("Failed to record snapshot with error: \(error)", file: file, line: line)
         }
+    }
+    
+    private func makeSnapshotData(snapshot: UIImage, file: StaticString = #file, line: UInt = #line) -> Data? {
+        guard let snapshotData = snapshot.pngData() else {
+            XCTFail("Failed to generate a PNG representation", file: file, line:  line)
+            return nil
+        }
+        return snapshotData
     }
 }
 
