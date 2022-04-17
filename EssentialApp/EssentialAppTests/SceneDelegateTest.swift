@@ -11,7 +11,18 @@ import XCTest
 @testable import EssentialApp
 
 final class SceneDelegateTest: XCTestCase {
-    func test_sceneWillConnectToSession_configuresViewController() {
+    
+    func test_configureWindow_setsWindowAsKeyAndVisible() {
+        let window = UIWindow()
+        let sut = SceneDelegate()
+        
+        sut.window = window
+        sut.configureWindow()
+        
+        XCTAssertFalse(window.isHidden, "Expected window to be visible")
+    }
+    
+    func test_configureWindow_configuresViewController() {
         let sut = SceneDelegate()
         sut.window = UIWindow()
         
