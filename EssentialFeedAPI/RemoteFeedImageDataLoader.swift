@@ -5,7 +5,7 @@
 //  Created by Sergio Khalil Bello Garcia on 21/03/22.
 //
 
-import Foundation
+import Feed
 
 public final class RemoteFeedImageDataLoader: FeedImageDataLoader {
     private let client: HTTPClient

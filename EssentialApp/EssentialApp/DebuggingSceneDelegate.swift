@@ -5,6 +5,7 @@
 //  Created by Sergio Khalil Bello Garcia on 14/04/22.
 //
 import UIKit
+import EssentialFeedAPI
 import Feed
 
 #if DEBUG

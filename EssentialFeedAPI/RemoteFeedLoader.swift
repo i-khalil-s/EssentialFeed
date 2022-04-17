@@ -5,7 +5,7 @@
 //  Created by Sergio Khalil Bello Garcia on 04/06/21.
 //
 
-import Foundation
+import Feed
 
 public final class RemoteFeedLoader: FeedLoader {
     

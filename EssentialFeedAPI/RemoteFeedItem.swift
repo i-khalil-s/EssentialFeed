@@ -5,7 +5,7 @@
 //  Created by Sergio Khalil Bello Garcia on 13/09/21.
 //
 
-import Foundation
+import Feed
 
 internal struct RemoteFeedItem : Decodable {
     let id: UUID
