@@ -11,3 +11,9 @@ public protocol FeedCache {
     typealias Result = Swift.Result<Void, Error>
     func save(feed: [FeedImage], completion: @escaping (Result) -> Void)
 }
+
+public extension FeedCache {
+    func saveIgnoringResult(_ feed: [FeedImage]) {
+        save(feed: feed) { _ in }
+    }
+}

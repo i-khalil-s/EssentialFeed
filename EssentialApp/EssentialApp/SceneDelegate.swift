@@ -10,6 +10,7 @@ import Feed
 import FeediOS
 import CoreData
 import EssentialFeedAPI
+import Combine
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -48,21 +49,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func configureWindow() {
-        let url = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5db4155a4fbade21d17ecd28/1572083034355/essential-app-feed.json"
-        )!
         
-        let remoteClient = makeRemoteClient()
-        let remoteFeedLoader = RemoteFeedLoader(url: url, client: remoteClient)
-        let remoteFeedImageDataLoader = RemoteFeedImageDataLoader(client: remoteClient)
-        
+        let remoteFeedImageDataLoader = RemoteFeedImageDataLoader(client: httpClient)
         let localFeedImageDataLoader = LocalFeedImageDataLoader(store: store)
         
         window?.rootViewController = UINavigationController(rootViewController:
             FeedUIComposer.feedComposedWith(
-                feedLoader: FeedLoaderWithFallbackComposite(
-                    primary: FeedLoaderCachaDecorator(decoratee: remoteFeedLoader, cache: localFeedLoader),
-                    fallback: localFeedLoader
-                ),
+                feedLoader: makeRemoteFeedLoaderWithLocalFallback,
                 imageLoader: FeedImageDataLoaderWithFallbackComposite(
                     primaryImageDataLoader: localFeedImageDataLoader,
                     secondaryImageDataLoader: FeedLoaderImageCacheDecorator(
@@ -78,33 +71,87 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func makeRemoteClient() -> HTTPClient {
         httpClient
     }
-
-    func sceneDidDisconnect(_ scene: UIScene) {
-        // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
-        // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-    }
-
+    
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
         localFeedLoader.validateCache() { _ in }
     }
 
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
+    private func makeRemoteFeedLoaderWithLocalFallback() -> FeedLoader.Publisher {
+        let url = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5db4155a4fbade21d17ecd28/1572083034355/essential-app-feed.json"
+        )!
+        
+        let remoteClient = makeRemoteClient()
+        let remoteFeedLoader = RemoteFeedLoader(url: url, client: remoteClient)
+        
+        return remoteFeedLoader
+            .loadPublisher()
+            .caching(to: localFeedLoader)
+            .fallback(to: localFeedLoader.loadPublisher)
     }
+}
 
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+public extension FeedLoader {
+    typealias Publisher = AnyPublisher<[FeedImage], Error>
+    func loadPublisher() -> Publisher {
+        Deferred {
+            Future(self.load)
+        }.eraseToAnyPublisher()
+    }
+}
+
+extension Publisher where Output == [FeedImage] {
+    func caching(to cache: FeedCache) -> AnyPublisher<Output, Failure> {
+        handleEvents(receiveOutput: cache.saveIgnoringResult).eraseToAnyPublisher()
+    }
+}
+
+extension Publisher {
+    func fallback(to fallbackPublisher: @escaping () -> AnyPublisher<Output, Failure>) -> AnyPublisher<Output, Failure> {
+        self.catch{ _ in fallbackPublisher() }.eraseToAnyPublisher()
+    }
+}
+
+extension Publisher {
+    func dispatchOnMainQueue() -> AnyPublisher<Output, Failure> {
+        receive(on: DispatchQueue.immediateWhenOnMainQueueScheduler).eraseToAnyPublisher()
+    }
+}
+
+extension DispatchQueue {
+    static var immediateWhenOnMainQueueScheduler: ImmediateWhenOnMainQueueScheduler {
+        ImmediateWhenOnMainQueueScheduler()
+    }
+    
+    struct ImmediateWhenOnMainQueueScheduler: Scheduler {
+        func schedule(after date: SchedulerTimeType, interval: SchedulerTimeType.Stride, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
+            DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: options, action)
+        }
+        
+        func schedule(after date: SchedulerTimeType, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) {
+            DispatchQueue.main.schedule(after: date, tolerance: tolerance, options: options, action)
+        }
+        
+        func schedule(options: SchedulerOptions?, _ action: @escaping () -> Void) {
+            guard Thread.isMainThread else {
+                return DispatchQueue.main.schedule(options: options, action)
+            }
+            action()
+        }
+        
+        var now: SchedulerTimeType {
+            DispatchQueue.main.now
+        }
+        
+        var minimumTolerance: SchedulerTimeType.Stride {
+            DispatchQueue.main.minimumTolerance
+        }
+        
+        typealias SchedulerTimeType = DispatchQueue.SchedulerTimeType
+        
+        typealias SchedulerOptions = DispatchQueue.SchedulerOptions
+        
+        
     }
 }
