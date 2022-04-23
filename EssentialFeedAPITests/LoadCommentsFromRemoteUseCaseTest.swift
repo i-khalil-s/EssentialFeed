@@ -49,8 +49,18 @@ class LoadCommentsFromRemoteUseCaseTest: XCTestCase {
     func test_load_deliversItemsOn2xxHTTPResponseWithValidJSON() {
         let (sut,client) = makeSUT()
         
-        let item1 = makeItem(id: UUID(), imageURL: URL(string: "http://a-url.com")!)
-        let item2 = makeItem(id: UUID(), description: "A descrip", location: "A location", imageURL: URL(string: "http://another-url.com")!)
+        let item1 = makeItem(
+            id: UUID(),
+            message: "A message",
+            createdAt: (date: Date.init(timeIntervalSince1970: 1598627222), iso8601String: "2020-08-28T15:07:02+00:00"),
+            userName: "Khalil"
+        )
+        let item2 = makeItem(
+            id: UUID(),
+            message: "Another message",
+            createdAt: (date: Date.init(timeIntervalSince1970: 1577881882), iso8601String: "2020-01-01T12:31:22+00:00"),
+            userName: "Fernanda"
+        )
         
         let items = [item1.model, item2.model]
         let itemsJSON = [item1.json, item2.json]
@@ -162,17 +172,19 @@ class LoadCommentsFromRemoteUseCaseTest: XCTestCase {
         return .failure(error)
     }
     
-    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedImage, json: [String:Any]) {
-        let feedItem = FeedImage(id: id, description: description, location: location, url: imageURL)
+    private func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601String: String), userName: String) -> (model: ImageComment, json: [String:Any]) {
+        let commentItem = ImageComment(id: id, message: message, createdAt: createdAt.date, userName: userName)
         
-        let json = [
-            "id": feedItem.id.uuidString,
-            "description": feedItem.description,
-            "location": feedItem.location,
-            "image": feedItem.url.absoluteString
-        ].compactMapValues {$0}
+        let json: [String: Any] = [
+            "id": id.uuidString,
+            "message": message,
+            "created_at": createdAt.iso8601String,
+            "author": [
+                "username": userName
+            ]
+        ]
         
-        return (feedItem, json)
+        return (commentItem, json)
     }
     
     func makeItemsJSON(_ items: [[String:Any]]) -> Data{
