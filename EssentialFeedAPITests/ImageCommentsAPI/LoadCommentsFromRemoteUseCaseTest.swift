@@ -13,25 +13,6 @@ import Feed
 class LoadCommentsFromRemoteUseCaseTest: XCTestCase {
     // MARK: Happy paths
     
-    func test_load_requestDataFromURL() {
-        let url = URL(string: "http://a-given-url.com")!
-        let (sut,client) = makeSUT(url: url)
-        
-        sut.load{_ in}
-        
-        XCTAssertEqual(client.requestedURLs, [url])
-    }
-    
-    func test_loadTwice_requestDataFromURLTwice() {
-        let url = URL(string: "http://a-given-url.com")!
-        let (sut,client) = makeSUT(url: url)
-        
-        sut.load{_ in}
-        sut.load{_ in}
-        
-        XCTAssertEqual(client.requestedURLs, [url, url])
-    }
-    
     func test_load_deliversNoItemsOn2xxHTTPResponse() {
         let (sut,client) = makeSUT()
         
@@ -77,22 +58,6 @@ class LoadCommentsFromRemoteUseCaseTest: XCTestCase {
 
     //MARK: Sad paths
     
-    func test_init_DoesNotRequestDateFromURL() {
-        let (_,client) = makeSUT()
-        
-        XCTAssertTrue(client.requestedURLs.isEmpty)
-        
-    }
-    
-    func test_load_deliversErrorOnClientFailure() {
-        let (sut,client) = makeSUT()
-        
-        expect(sut, toCompleteWith: failure(.connectivity), when: {
-            let clientError = NSError(domain: "Test", code: 0)
-            client.complete(with: clientError)
-        })
-    }
-    
     func test_load_deliversErrorOnNot2xxHTTPResponse() {
         let (sut,client) = makeSUT()
         
@@ -117,21 +82,6 @@ class LoadCommentsFromRemoteUseCaseTest: XCTestCase {
                 client.complete(withStatus: code, data: invalidJSON, at: idx)
             })
         }
-    }
-    
-    func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
-        let url = URL(string: "http://a-url.com")!
-        let client = HTTPClientSpy()
-        var sut: RemoteImageCommentsLoader? = RemoteImageCommentsLoader(url: url, client: client)
-        
-        var capturedResults = [RemoteImageCommentsLoader.Result]()
-        sut?.load {
-            capturedResults.append($0)
-        }
-        sut = nil
-        client.complete(withStatus: 200, data: makeItemsJSON([]))
-        
-        XCTAssertTrue(capturedResults.isEmpty)
     }
     
     /// MARK: Helpers
