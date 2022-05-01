@@ -73,7 +73,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )!
         
         let remoteClient = makeRemoteClient()
-        let remoteFeedLoader = RemoteFeedLoader(url: url, client: remoteClient)
+        let remoteFeedLoader = RemoteLoader(url: url, client: remoteClient, mapper: FeedItemsMapper.map)
         
         return remoteFeedLoader
             .loadPublisher()
