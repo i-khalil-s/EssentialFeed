@@ -72,11 +72,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let url = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5db4155a4fbade21d17ecd28/1572083034355/essential-app-feed.json"
         )!
         
-        let remoteClient = makeRemoteClient()
-        let remoteFeedLoader = RemoteLoader(url: url, client: remoteClient, mapper: FeedItemsMapper.map)
-        
-        return remoteFeedLoader
-            .loadPublisher()
+        return httpClient
+            .getPublisher(url: url)
+            .tryMap(FeedItemsMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
     }
