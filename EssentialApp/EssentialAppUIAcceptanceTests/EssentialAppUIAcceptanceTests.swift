@@ -15,7 +15,7 @@ class EssentialAppUIAcceptanceTests: XCTestCase {
         app.launch()
         
         let feedCells = app.cells.matching(identifier: "feed-image-cell")
-        XCTAssertEqual(feedCells.count, 2)
+        XCTAssertEqual(feedCells.count, 22)
         
         let firstImage = app.images.matching(identifier: "feed-image-view").firstMatch
         XCTAssertTrue(firstImage.exists)
@@ -31,7 +31,7 @@ class EssentialAppUIAcceptanceTests: XCTestCase {
         offlineApp.launch()
         
         let cachedFeedCells = offlineApp.cells.matching(identifier: "feed-image-cell")
-        XCTAssertEqual(cachedFeedCells.count, 2)
+        XCTAssertEqual(cachedFeedCells.count, 22)
         
         let cachedFirstImage = offlineApp.images.matching(identifier: "feed-image-view").firstMatch
         XCTAssertTrue(cachedFirstImage.exists)
