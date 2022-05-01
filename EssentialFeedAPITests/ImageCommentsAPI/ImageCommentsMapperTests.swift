@@ -68,6 +68,8 @@ class LoadCommentsFromRemoteUseCaseTest: XCTestCase {
                 let json = makeItemsJSON([])
                 client.complete(withStatus: code, data: json, at: idx)
             })
+                try ImageCommentsMapper.map(json, from: HTTPURLResponse(statusCode: code))
+            )
         }
     }
     

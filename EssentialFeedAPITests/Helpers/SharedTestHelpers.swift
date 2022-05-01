@@ -14,3 +14,10 @@ func anyNSError() -> NSError {
 func anyURL() -> URL {
     return URL(string: "http://a-url.com")!
 }
+
+func makeItemsJSON(_ items: [[String:Any]]) -> Data{
+    let itemsJSON = [
+        "items" : items
+    ]
+    return  try! JSONSerialization.data(withJSONObject: itemsJSON)
+}
