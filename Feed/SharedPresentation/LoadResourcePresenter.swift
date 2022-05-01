@@ -18,15 +18,6 @@ public class LoadResourcePresenter {
         self.loadingView = loadingView
     }
     
-    public static var title: String {
-        return NSLocalizedString(
-            "FEED_VIEW_TITLE",
-            tableName: "Feed",
-            bundle: Bundle(for: FeedPresenter.self),
-            comment: "Title for the Feed View"
-        )
-    }
-    
     public func didStartLoadingFeed() {
         errorView.display(.noError)
         loadingView.display(FeedLoadingViewModel(isLoading: true))
