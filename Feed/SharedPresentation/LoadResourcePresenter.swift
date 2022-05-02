@@ -7,28 +7,35 @@
 
 import Foundation
 
+public protocol ResourceView {
+    func display(_ viewModel: String)
+}
+
 public class LoadResourcePresenter {
-    private let feedView: FeedView
+    public typealias Mapper = (String) -> String
+    private let resourceView: ResourceView
     private let errorView: ErrorView
     private let loadingView: FeedLoadingView
+    private let mapper: Mapper
     
-    public init(feedView: FeedView, errorView: ErrorView, loadingView: FeedLoadingView) {
-        self.feedView = feedView
+    public init(resourceView: ResourceView, errorView: ErrorView, loadingView: FeedLoadingView, mapper: @escaping Mapper) {
+        self.resourceView = resourceView
         self.errorView = errorView
         self.loadingView = loadingView
+        self.mapper = mapper
     }
     
-    public func didStartLoadingFeed() {
+    public func didStartLoading() {
         errorView.display(.noError)
         loadingView.display(FeedLoadingViewModel(isLoading: true))
     }
     
-    public func didFinishLoadingFeed(with feed: [FeedImage]) {
-        feedView.display(FeedViewModel(feed: feed))
+    public func didFinishLoading(with resource: String) {
+        resourceView.display(mapper(resource))
         loadingView.display(.init(isLoading: false))
     }
     
-    public func didFinishLoadingFeed(with error: Error) {
+    public func didFinishLoading(with error: Error) {
         errorView.display(.error(message: feedLoadError))
         loadingView.display(.init(isLoading: false))
     }
