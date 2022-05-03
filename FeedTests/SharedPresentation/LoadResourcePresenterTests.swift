@@ -32,7 +32,7 @@ class LoadResourcePresenterTests: XCTestCase {
         sut.didFinishLoading(with: anyNSError())
         
         XCTAssertEqual(view.messages, [
-            .display(errorMessage: localized("FEED_VIEW_CONNECTION_ERROR")),
+            .display(errorMessage: localized("GENERIC_CONNECTION_ERROR")),
             .display(isLoading: false)
         ])
     }
@@ -70,7 +70,7 @@ class LoadResourcePresenterTests: XCTestCase {
     }
     
     private func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
-        let table = "Feed"
+        let table = "Shared"
         let bundle = Bundle(for: SUT.self)
         let value = bundle.localizedString(forKey: key, value: nil, table: table)
         
