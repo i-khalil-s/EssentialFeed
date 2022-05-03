@@ -80,7 +80,7 @@ class LoadResourcePresenterTests: XCTestCase {
         return value
     }
     
-    private class ViewSpy: ErrorView, FeedLoadingView, ResourceView {
+    private class ViewSpy: ErrorView, ResourceLoadingView, ResourceView {
         
         typealias ResourceViewModel = String
         
@@ -96,7 +96,7 @@ class LoadResourcePresenterTests: XCTestCase {
             messages.insert(.display(errorMessage: viewModel.message))
         }
         
-        func display(_ viewModel: FeedLoadingViewModel) {
+        func display(_ viewModel: ResourceLoadingViewModel) {
             messages.insert(.display(isLoading: viewModel.isLoading))
         }
         
