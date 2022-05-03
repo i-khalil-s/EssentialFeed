@@ -37,7 +37,7 @@ public final class FeedPresenter {
     }
     
     public func didFinishLoadingFeed(with feed: [FeedImage]) {
-        feedView.display(FeedViewModel(feed: feed))
+        feedView.display(Self.map(feed))
         loadingView.display(.init(isLoading: false))
     }
     
@@ -53,5 +53,9 @@ public final class FeedPresenter {
             bundle: Bundle(for: FeedPresenter.self),
             comment: "Error message displayed wwhen we cannot display image from server"
         )
+    }
+    
+    public static func map(_ feed: [FeedImage]) -> FeedViewModel {
+        FeedViewModel(feed: feed)
     }
 }
