@@ -79,8 +79,8 @@ extension FeedViewController: ResourceLoadingView {
     }
 }
 
-extension FeedViewController: ErrorView {
-    public func display(_ viewModel: FeedErrorViewModel) {
+extension FeedViewController: ResourceErrorView {
+    public func display(_ viewModel: ResourceErrorViewModel) {
         let alert = UIAlertController(title: viewModel.message, message: nil, preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alert.addAction(dismissAction)

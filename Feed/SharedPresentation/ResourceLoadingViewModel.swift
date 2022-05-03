@@ -10,3 +10,7 @@ import Foundation
 public struct ResourceLoadingViewModel {
     public let isLoading: Bool
 }
+
+public protocol ResourceErrorView {
+    func display(_ viewModel: ResourceErrorViewModel)
+}
