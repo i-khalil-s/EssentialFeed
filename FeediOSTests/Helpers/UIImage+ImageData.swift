@@ -64,6 +64,7 @@ extension XCTestCase {
             snapshotURL = snapshotURL.appendingPathComponent("\(named).png")
             
             try snapshotData?.write(to: snapshotURL)
+            XCTFail("Snapshot recorded, please use `assert` to compare the images", file: file, line: line)
         } catch {
             XCTFail("Failed to record snapshot with error: \(error)", file: file, line: line)
         }
