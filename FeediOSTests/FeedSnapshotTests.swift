@@ -11,15 +11,6 @@ import FeediOS
 @testable import Feed
 
 class FeedSnapshotTests: XCTestCase {
-    func test_emptyFeed() {
-        let sut = makeSUT()
-        
-        sut.display(emptyFeed())
-        
-        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "EMPTY_FEED_dark")
-        assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "EMPTY_FEED_light")
-    }
-    
     func test_feedWithContent() {
         let sut = makeSUT()
         
@@ -27,15 +18,6 @@ class FeedSnapshotTests: XCTestCase {
         
         assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "FEED_WITH_CONTENT_dark")
         assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "FEED_WITH_CONTENT_light")
-    }
-    
-    func test_feedWithErrorMessage() {
-        let sut = makeSUT()
-        
-        sut.display(.error(message: "An error message"))
-        
-        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "FEED_WITH_ErrorMessage_dark")
-        assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "FEED_WITH_ErrorMessage_light")
     }
     
     func test_feedWithFailedImageLoading() {
@@ -59,10 +41,6 @@ class FeedSnapshotTests: XCTestCase {
         return controller
     }
     
-    private func emptyFeed() -> [FeedImageCellController] {
-        return []
-    }
-    
     private func feedWithContent() -> [ImageStub] {
         return [
             .init(description: "The East Side Gallery memorial in Berlin-Friedrichshain is a permanent open-air gallery on the longest surviving section of the Berlin Wall in Mühlenstraße.", location: "Mühlenstrasse (Mill Street)\nBerlin, Germany", image: UIImage.make(withColor: .red)),
@@ -75,57 +53,6 @@ class FeedSnapshotTests: XCTestCase {
             .init(description: nil, location: "Mühlenstrasse (Mill Street)\nBerlin, Germany", image: nil),
             .init(description: nil, location: "Mexico City", image: nil)
         ]
-    }
-    
-    private func assert(snapshot: UIImage, named name: String, file: StaticString = #file, line: UInt = #line) {
-        let snapshotData = makeSnapshotData(snapshot: snapshot, file: file, line: line)
-        
-        let snapshotURL = URL(fileURLWithPath: String(describing: file))
-            .deletingLastPathComponent()
-            .appendingPathComponent("snapshots")
-            .appendingPathComponent("\(name).png")
-        
-        guard let storedSnapshotData = try? Data(contentsOf: snapshotURL) else {
-            XCTFail("Failed to load stored snapshot at \(snapshotURL). Use `record` method to store a snapshot b efore asserting", file: file, line: line)
-            return
-        }
-        
-        if snapshotData != storedSnapshotData {
-            let temporalySnapshotURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-                .appendingPathComponent(snapshotURL.lastPathComponent)
-            
-            try? snapshotData?.write(to: temporalySnapshotURL)
-            
-            XCTFail("Snapshots does not match stored one. New snapshot URL: \(temporalySnapshotURL), stored snapshot: \(storedSnapshotData)")
-        }
-    }
-    
-    private func record(snapshot: UIImage, named: String, file: StaticString = #file, line: UInt = #line) {
-        let snapshotData = makeSnapshotData(snapshot: snapshot, file: file, line: line)
-        
-        var snapshotURL = URL(fileURLWithPath: String(describing: file))
-            .deletingLastPathComponent()
-            .appendingPathComponent("snapshots")
-        
-        do {
-            try FileManager.default.createDirectory(
-                at: snapshotURL,
-                withIntermediateDirectories: true
-            )
-            snapshotURL = snapshotURL.appendingPathComponent("\(named).png")
-            
-            try snapshotData?.write(to: snapshotURL)
-        } catch {
-            XCTFail("Failed to record snapshot with error: \(error)", file: file, line: line)
-        }
-    }
-    
-    private func makeSnapshotData(snapshot: UIImage, file: StaticString = #file, line: UInt = #line) -> Data? {
-        guard let snapshotData = snapshot.pngData() else {
-            XCTFail("Failed to generate a PNG representation", file: file, line:  line)
-            return nil
-        }
-        return snapshotData
     }
 }
 
