@@ -8,10 +8,6 @@
 import UIKit
 import Feed
 
-public protocol FeedViewControllerDelegate {
-    func didRequestFeedRefresh()
-}
-
 public protocol CellController {
     func view(in tableView: UITableView) -> UITableViewCell
     func preload()
@@ -23,13 +19,13 @@ final public class ListViewController: UITableViewController {
         didSet { self.tableView.reloadData() }
     }
     
-    public var delegate: FeedViewControllerDelegate?
+    public var onRefresh: (() -> Void)?
     public override func viewDidLoad() {
         refresh()
     }
     
     @IBAction private func refresh() {
-        delegate?.didRequestFeedRefresh()
+        onRefresh?()
     }
     
     private var loadingControllers = [IndexPath: CellController]()
