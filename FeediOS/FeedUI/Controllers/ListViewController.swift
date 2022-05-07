@@ -18,7 +18,7 @@ public protocol CellController {
     func cancelLoad()
 }
 
-final public class FeedViewController: UITableViewController {
+final public class ListViewController: UITableViewController {
     private var tableModel = [CellController]() {
         didSet { self.tableView.reloadData() }
     }
@@ -63,7 +63,7 @@ final public class FeedViewController: UITableViewController {
     }
 }
 
-extension FeedViewController: UITableViewDataSourcePrefetching {
+extension ListViewController: UITableViewDataSourcePrefetching {
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
             cellController(forRowAt: indexPath).preload()
@@ -75,7 +75,7 @@ extension FeedViewController: UITableViewDataSourcePrefetching {
     }
 }
 
-extension FeedViewController: ResourceLoadingView {
+extension ListViewController: ResourceLoadingView {
     public func display(_ viewModel: ResourceLoadingViewModel) {
         if viewModel.isLoading {
             refreshControl?.beginRefreshing()
@@ -85,7 +85,7 @@ extension FeedViewController: ResourceLoadingView {
     }
 }
 
-extension FeedViewController: ResourceErrorView {
+extension ListViewController: ResourceErrorView {
     public func display(_ viewModel: ResourceErrorViewModel) {
         let alert = UIAlertController(title: viewModel.message, message: nil, preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
