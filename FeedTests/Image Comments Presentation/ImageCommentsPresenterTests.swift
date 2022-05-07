@@ -16,12 +16,13 @@ final class ImageCommentsPresenterTests: XCTestCase {
     
     func test_map_createsViewModels() {
         let now = Date()
-        let comments = [
-            ImageComment(id: UUID(), message: "Message", createdAt: now.adding(minutes: -5), userName: "Name"),
-            ImageComment(id: UUID(), message: "Another message", createdAt: now.adding(days: -1), userName: "Another name")
-        ]
         let calendar = Calendar(identifier: .gregorian)
         let locale = Locale(identifier: "en_US_POSIX")
+        
+        let comments = [
+            ImageComment(id: UUID(), message: "Message", createdAt: now.adding(minutes: -5, calendar: calendar), userName: "Name"),
+            ImageComment(id: UUID(), message: "Another message", createdAt: now.adding(days: -1, calendar: calendar), userName: "Another name")
+        ]
         
         let viewModel = ImageCommentsPresenter.map(
             comments,
