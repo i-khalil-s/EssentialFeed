@@ -13,7 +13,7 @@ public protocol FeedImageCellControllerDelegate {
     func didCancelImageRequest()
 }
 
-public final class FeedImageCellController: NSObject, FeedImageView, CellController {
+public final class FeedImageCellController: NSObject, FeedImageView, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     private let delegate: FeedImageCellControllerDelegate
     private var cell: FeedImageCell?
     
