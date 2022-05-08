@@ -13,7 +13,7 @@ public protocol FeedImageCellControllerDelegate {
     func didCancelImageRequest()
 }
 
-public final class FeedImageCellController: FeedImageView, CellController {
+public final class FeedImageCellController: NSObject, FeedImageView, CellController {
     private let delegate: FeedImageCellControllerDelegate
     private var cell: FeedImageCell?
     
@@ -21,13 +21,7 @@ public final class FeedImageCellController: FeedImageView, CellController {
         self.delegate = delegate
     }
     
-    public func view(in tableView: UITableView) -> UITableViewCell {
-        cell = tableView.dequeueReusableCell()
-        delegate.didRequestImage()
-        return cell!
-    }
-    
-    public func preload() {
+    private func preload() {
         delegate.didRequestImage()
     }
     
@@ -48,5 +42,28 @@ public final class FeedImageCellController: FeedImageView, CellController {
     
     func releaseCellForReuse() {
         cell = nil
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        cell = tableView.dequeueReusableCell()
+        cell?.onRetry = delegate.didRequestImage
+        delegate.didRequestImage()
+        return cell!
+    }
+    
+    public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        delegate.didRequestImage()
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cancelLoad()
+    }
+    
+    public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        cancelLoad()
     }
 }
