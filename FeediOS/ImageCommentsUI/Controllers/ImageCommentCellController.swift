@@ -22,8 +22,14 @@ public class ImageCommentCellController: NSObject, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ImageCommentCell = tableView.dequeueReusableCell()
         cell.commentLabel.text = model.comment
+        cell.commentLabel.font = .preferredFont(forTextStyle: .body)
+        cell.commentLabel.adjustsFontForContentSizeCategory = true
         cell.dateLabel.text = model.date
+        cell.dateLabel.font = .preferredFont(forTextStyle: .subheadline)
+        cell.dateLabel.adjustsFontForContentSizeCategory = true
         cell.userNameLabel.text = model.name
+        cell.userNameLabel.font = .preferredFont(forTextStyle: .headline)
+        cell.userNameLabel.adjustsFontForContentSizeCategory = true
         return cell
     }
     
