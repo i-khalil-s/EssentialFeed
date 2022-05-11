@@ -50,8 +50,10 @@ public final class FeedImageCellController: NSObject, FeedImageView, UITableView
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         cell = tableView.dequeueReusableCell()
-        cell?.onRetry = delegate.didRequestImage
         delegate.didRequestImage()
+        cell?.onRetry = { [weak self] in
+            self?.delegate.didRequestImage()
+        }
         return cell!
     }
     

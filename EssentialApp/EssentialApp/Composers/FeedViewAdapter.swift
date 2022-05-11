@@ -31,7 +31,7 @@ final class FeedViewAdapter: ResourceView {
                 imageTransformer: UIImage.init
             )
             
-            return CellController(view, view, view)
+            return CellController(id: model, dataSource: view)
         })
     }
     

@@ -8,15 +8,54 @@
 import UIKit
 import Feed
 
-public typealias CellController = (dataSource: UITableViewDataSource, delegate: UITableViewDelegate?, prefetching: UITableViewDataSourcePrefetching?)
+public struct CellController {
+    let id: AnyHashable
+    let dataSource: UITableViewDataSource
+    let delegate: UITableViewDelegate?
+    let prefetching: UITableViewDataSourcePrefetching?
+    
+    public init(
+        id: AnyHashable,
+        dataSource: UITableViewDataSource & UITableViewDelegate & UITableViewDataSourcePrefetching
+    ) {
+        self.id = id
+        self.dataSource = dataSource
+        self.delegate = dataSource
+        self.prefetching = dataSource
+    }
+    
+    public init(
+        id: AnyHashable,
+        dataSource: UITableViewDataSource
+    ) {
+        self.id = id
+        self.dataSource = dataSource
+        self.delegate = nil
+        self.prefetching = nil
+    }
+}
+
+extension CellController: Equatable {
+    public static func == (lhs: CellController, rhs: CellController) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+extension CellController: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
 
 final public class ListViewController: UITableViewController {
-    private var tableModel = [CellController]() {
-        didSet { self.tableView.reloadData() }
-    }
+    private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
+        .init(tableView: tableView) { (tableView, indexPath, controller) -> UITableViewCell? in
+            return controller.dataSource.tableView(tableView, cellForRowAt: indexPath)
+        }
+    }()
     
     public var onRefresh: (() -> Void)?
     public override func viewDidLoad() {
+        tableView.dataSource = dataSource
         refresh()
     }
     
@@ -24,51 +63,41 @@ final public class ListViewController: UITableViewController {
         onRefresh?()
     }
     
-    private var loadingControllers = [IndexPath: CellController]()
-    
     public func display(_ cellControllers: [CellController]) {
-        loadingControllers = [:]
-        tableModel = cellControllers
-    }
-    
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableModel.count
-    }
-    
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let controller = cellController(forRowAt: indexPath).dataSource
-        return controller.tableView(tableView, cellForRowAt: indexPath)
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
+        
+        snapshot.appendSections([0])
+        snapshot.appendItems(cellControllers, toSection: 0)
+        dataSource.apply(snapshot)
     }
     
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let controller = removeLoadingController(forRowAt: indexPath)?.delegate
+        let controller = cellController(at: indexPath)?.delegate
         controller?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
     }
     
-    private func cellController(forRowAt indexPath: IndexPath) -> CellController {
-        let controller = tableModel[indexPath.row]
-        loadingControllers[indexPath] = controller
-        return controller
+    private func cellController(at indexPath: IndexPath) -> CellController? {
+        dataSource.itemIdentifier(for: indexPath)
     }
     
-    private func removeLoadingController(forRowAt indexPath: IndexPath) -> CellController? {
-        let controller = loadingControllers[indexPath]
-        loadingControllers[indexPath] = nil
-        return controller
+    public override func traitCollectionDidChange(_ previous: UITraitCollection?) {
+        if previous?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            tableView.reloadData()
+        }
     }
 }
 
 extension ListViewController: UITableViewDataSourcePrefetching {
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let controller = cellController(forRowAt: indexPath).prefetching
+            let controller = cellController(at: indexPath)?.prefetching
             controller?.tableView(tableView, prefetchRowsAt: [indexPath])
         }
     }
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let controller = removeLoadingController(forRowAt: indexPath)?.prefetching
+            let controller = cellController(at: indexPath)?.prefetching
             controller?.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
         }
     }
@@ -90,5 +119,10 @@ extension ListViewController: ResourceErrorView {
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alert.addAction(dismissAction)
         present(alert, animated: true)
+    }
+    
+    public override func loadViewIfNeeded() {
+        super.loadViewIfNeeded()
+        tableView.frame = CGRect(origin: .zero, size: CGSize(width: 1, height: 1))
     }
 }
