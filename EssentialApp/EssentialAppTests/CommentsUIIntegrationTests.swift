@@ -38,19 +38,19 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         XCTAssertEqual(loader.loadCommentsCallCount, 3, "Expected a thrid loading request once user initiates another load")
     }
     
-    override func test_loadingFeedIndicator_isVisibleWhileLoadingTheFeed() {
+    func test_loadingCommentsIndicator_isVisibleWhileLoadingComments() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator once view is loaded")
     
-        loader.compleFeedLoading(at: 0)
+        loader.completeCommentsLoading(at: 0)
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once loading is completed successfully")
         
         sut.simulateUserInitiatedReaload()
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator once user initiates a load")
     
-        loader.compleFeedLoadingWithError(at: 1)
+        loader.completeCommentesLoadingWithError(at: 1)
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once user initiated loading is not completed")
     }
     
@@ -60,7 +60,7 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         
         let expectation = expectation(description: "Wait for background queue")
         DispatchQueue.global().async {
-            loader.compleFeedLoading(at: 0)
+            loader.completeCommentsLoading(at: 0)
             expectation.fulfill()
         }
         
@@ -119,11 +119,11 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
             return publisher.eraseToAnyPublisher()
         }
         
-        func compleFeedLoading(with feedModel: [FeedImage] = [], at index: Int = 0) {
+        func completeCommentsLoading(with feedModel: [FeedImage] = [], at index: Int = 0) {
             requests[index].send(feedModel)
         }
         
-        func compleFeedLoadingWithError(at index: Int = 0) {
+        func completeCommentesLoadingWithError(at index: Int = 0) {
             let error = NSError(domain: "an error", code: 0)
             requests[index].send(completion: .failure(error))
         }
