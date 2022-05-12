@@ -9,7 +9,7 @@ import UIKit
 import FeediOS
 
 extension ListViewController {
-    func simulateUserInitiatedFeedRealod() {
+    func simulateUserInitiatedReaload() {
         refreshControl?.simulatePullToRefresh()
     }
     

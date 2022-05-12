@@ -10,6 +10,7 @@ import XCTest
 import Feed
 import FeediOS
 import EssentialApp
+import Combine
 
 final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
     
@@ -22,19 +23,19 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         
     }
     
-    override func test_loadFeedActions_requestFeedFromLoader() {
+    func test_loadCommentsActions_requestCommentsFromLoader() {
         let (sut, loader) = makeSUT()
         
-        XCTAssertEqual(loader.loadFeedCallCount, 0, "Expected no loading request before view is loaded")
+        XCTAssertEqual(loader.loadCommentsCallCount, 0, "Expected no loading request before view is loaded")
         
         sut.loadViewIfNeeded()
-        XCTAssertEqual(loader.loadFeedCallCount, 1, "Expected a loading request once view is loaded")
+        XCTAssertEqual(loader.loadCommentsCallCount, 1, "Expected a loading request once view is loaded")
         
-        sut.simulateUserInitiatedFeedRealod()
-        XCTAssertEqual(loader.loadFeedCallCount, 2, "Expected another loading request once user initiates a load")
+        sut.simulateUserInitiatedReaload()
+        XCTAssertEqual(loader.loadCommentsCallCount, 2, "Expected another loading request once user initiates a load")
         
-        sut.simulateUserInitiatedFeedRealod()
-        XCTAssertEqual(loader.loadFeedCallCount, 3, "Expected a thrid loading request once user initiates another load")
+        sut.simulateUserInitiatedReaload()
+        XCTAssertEqual(loader.loadCommentsCallCount, 3, "Expected a thrid loading request once user initiates another load")
     }
     
     override func test_loadingFeedIndicator_isVisibleWhileLoadingTheFeed() {
@@ -46,7 +47,7 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         loader.compleFeedLoading(at: 0)
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once loading is completed successfully")
         
-        sut.simulateUserInitiatedFeedRealod()
+        sut.simulateUserInitiatedReaload()
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator once user initiates a load")
     
         loader.compleFeedLoadingWithError(at: 1)
@@ -105,5 +106,27 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         }
     }
     
+    private class LoaderSpy {
+        
+        private var requests: [PassthroughSubject<[FeedImage], Error>] = []
+        var loadCommentsCallCount: Int {
+            return requests.count
+        }
+        
+        func loadPublisher() -> AnyPublisher<[FeedImage], Error> {
+            let publisher = PassthroughSubject<[FeedImage], Error>()
+            requests.append(publisher)
+            return publisher.eraseToAnyPublisher()
+        }
+        
+        func compleFeedLoading(with feedModel: [FeedImage] = [], at index: Int = 0) {
+            requests[index].send(feedModel)
+        }
+        
+        func compleFeedLoadingWithError(at index: Int = 0) {
+            let error = NSError(domain: "an error", code: 0)
+            requests[index].send(completion: .failure(error))
+        }
+    }
 }
 

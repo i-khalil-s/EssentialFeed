@@ -30,10 +30,10 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.loadViewIfNeeded()
         XCTAssertEqual(loader.loadFeedCallCount, 1, "Expected a loading request once view is loaded")
         
-        sut.simulateUserInitiatedFeedRealod()
+        sut.simulateUserInitiatedReaload()
         XCTAssertEqual(loader.loadFeedCallCount, 2, "Expected another loading request once user initiates a load")
         
-        sut.simulateUserInitiatedFeedRealod()
+        sut.simulateUserInitiatedReaload()
         XCTAssertEqual(loader.loadFeedCallCount, 3, "Expected a thrid loading request once user initiates another load")
     }
     
@@ -46,7 +46,7 @@ class FeedUIIntegrationTests: XCTestCase {
         loader.compleFeedLoading(at: 0)
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once loading is completed successfully")
         
-        sut.simulateUserInitiatedFeedRealod()
+        sut.simulateUserInitiatedReaload()
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator once user initiates a load")
     
         loader.compleFeedLoadingWithError(at: 1)
@@ -66,7 +66,7 @@ class FeedUIIntegrationTests: XCTestCase {
         loader.compleFeedLoading(with: [image0], at: 0)
         assertThat(sut, isRendering: [image0])
         
-        sut.simulateUserInitiatedFeedRealod()
+        sut.simulateUserInitiatedReaload()
         loader.compleFeedLoading(with: [image0, image1, image2, image3], at: 1)
         assertThat(sut, isRendering: [image0, image1, image2, image3])
         
@@ -81,7 +81,7 @@ class FeedUIIntegrationTests: XCTestCase {
         loader.compleFeedLoading(with: [image0, image1], at: 0)
         assertThat(sut, isRendering: [image0, image1])
         
-        sut.simulateUserInitiatedFeedRealod()
+        sut.simulateUserInitiatedReaload()
         loader.compleFeedLoading(with: [], at: 1)
         assertThat(sut, isRendering: [])
         
@@ -94,7 +94,7 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.loadViewIfNeeded()
         loader.compleFeedLoading(with: [image0], at: 0)
         
-        sut.simulateUserInitiatedFeedRealod()
+        sut.simulateUserInitiatedReaload()
         loader.compleFeedLoadingWithError(at: 1)
         
         assertThat(sut, isRendering: [image0])
