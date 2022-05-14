@@ -85,6 +85,11 @@ final public class ListViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+    
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let delegate = cellController(at: indexPath)?.delegate
+        delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+    }
 }
 
 extension ListViewController: UITableViewDataSourcePrefetching {

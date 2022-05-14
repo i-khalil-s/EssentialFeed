@@ -16,9 +16,11 @@ public protocol FeedImageCellControllerDelegate {
 public final class FeedImageCellController: NSObject, FeedImageView, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     private let delegate: FeedImageCellControllerDelegate
     private var cell: FeedImageCell?
+    private let selection: () -> Void
     
-    public init(delegate: FeedImageCellControllerDelegate){
+    public init(delegate: FeedImageCellControllerDelegate, selection: @escaping () -> Void){
         self.delegate = delegate
+        self.selection = selection
     }
     
     private func preload() {
@@ -67,5 +69,9 @@ public final class FeedImageCellController: NSObject, FeedImageView, UITableView
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         cancelLoad()
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selection()
     }
 }
