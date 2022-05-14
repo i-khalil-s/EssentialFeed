@@ -18,3 +18,11 @@ func anyURL() -> URL {
 func uniqueFeed() -> [FeedImage] {
     [FeedImage(id: UUID(), description: "any", location: "any", url: URL(string: "www.apple.com")!)]
 }
+
+var feedTitle: String {
+    FeedPresenter.title
+}
+
+var commentsTile: String {
+    ImageCommentsPresenter.title
+}
