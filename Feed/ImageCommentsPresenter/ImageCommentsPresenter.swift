@@ -36,11 +36,11 @@ public final class ImageCommentsPresenter {
     }
 }
 
-public struct ImageCommentsViewModel: Equatable {
+public struct ImageCommentsViewModel: Hashable {
     public let comments: [ImageCommentViewModel]
 }
 
-public struct ImageCommentViewModel: Equatable {
+public struct ImageCommentViewModel: Hashable {
     public let name: String
     public let comment: String
     public let date: String

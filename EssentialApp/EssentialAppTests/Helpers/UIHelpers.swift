@@ -32,6 +32,36 @@ extension ListViewController {
     var isShowingLoadingIndicator: Bool {
         return refreshControl?.isRefreshing ?? false
     }
+}
+
+// MARK: Comments
+    
+extension ListViewController {
+    private var commentsSection: Int {
+        return 0
+    }
+    
+    func numberOfRenderedComments() -> Int {
+        tableView.numberOfSections == .zero ? .zero : tableView.numberOfRows(inSection: commentsSection)
+    }
+    
+    func numberOfRenderedCommentViews() -> Int {
+        tableView.numberOfSections == .zero ? .zero : tableView.numberOfRows(inSection: commentsSection)
+    }
+    
+    func commentView(at row: Int) -> UITableViewCell? {
+        guard numberOfRenderedCommentViews() > row else {
+            return nil
+        }
+        let ds = tableView.dataSource
+        let index = IndexPath(row: row, section: commentsSection)
+        return ds?.tableView(tableView, cellForRowAt: index)
+    }
+}
+ 
+// MARK: Feed
+
+extension ListViewController {
     
     func numberOfRenderedFeedImageViews() -> Int {
         tableView.numberOfSections == .zero ? .zero : tableView.numberOfRows(inSection: feedImageSection)
@@ -92,6 +122,20 @@ extension FeedImageCell {
     
     func simulateRetryAction() {
         feedImageRetryButton.simulateTap()
+    }
+}
+
+extension ImageCommentCell {
+    var userNameText: String? {
+        return userNameLabel.text
+    }
+    
+    var messageText: String? {
+        return commentLabel.text
+    }
+    
+    var dateText: String? {
+        return dateLabel.text
     }
 }
 
